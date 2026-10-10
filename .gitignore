@@ -1,5 +1,6 @@
 node_modules/
 dist/
+.qw-pages/
 coverage/
 .env
 .env.*

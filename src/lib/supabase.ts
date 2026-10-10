@@ -12,7 +12,7 @@ export const supabase = isSupabaseConfigured
         autoRefreshToken: true,
         detectSessionInUrl: true,
         flowType: "pkce",
-        storageKey: "kompetisikita-auth",
+        storageKey: "inefest-auth",
       },
     })
   : null;

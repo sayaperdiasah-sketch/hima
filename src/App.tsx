@@ -17,6 +17,7 @@ import {
   FileCheck2,
   FileText,
   Filter,
+  Handshake,
   Image,
   LayoutDashboard,
   LockKeyhole,
@@ -113,10 +114,62 @@ type HeroSlide = {
 };
 
 const defaultHeroes: HeroSlide[] = [
-  { id: 1, slot: 1, title: "Panggung untuk ide terbaikmu", subtitle: "Unggah logo atau foto utama dari panel admin.", imageUrl: null, imagePath: null, ctaLabel: "Jelajahi kompetisi", ctaUrl: "#/kompetisi", active: true },
-  { id: 2, slot: 2, title: "Kompetisi yang menantang", subtitle: "Sorot lomba unggulan atau kampanye utama.", imageUrl: null, imagePath: null, ctaLabel: "Lihat jadwal", ctaUrl: "#/kompetisi", active: true },
-  { id: 3, slot: 3, title: "Saatnya menunjukkan karya", subtitle: "Tampilkan foto peserta, sponsor, atau pengumuman.", imageUrl: null, imagePath: null, ctaLabel: "Mulai daftar", ctaUrl: "#/daftar", active: true },
+  { id: 1, slot: 1, title: "Teknologi bertemu kreativitas", subtitle: "Panggung utama INEFEST 4.0 untuk karya, kompetisi, dan kolaborasi.", imageUrl: null, imagePath: null, ctaLabel: "Jelajahi kompetisi", ctaUrl: "#/kompetisi", active: true },
+  { id: 2, slot: 2, title: "Berani membangun masa depan", subtitle: "Temukan tantangan informatika yang sesuai dengan talenta terbaikmu.", imageUrl: null, imagePath: null, ctaLabel: "Lihat jadwal", ctaUrl: "#/kompetisi", active: true },
+  { id: 3, slot: 3, title: "Tumbuh lewat kolaborasi", subtitle: "INEFEST mempertemukan peserta, komunitas, sponsor, dan media partner.", imageUrl: null, imagePath: null, ctaLabel: "Mulai daftar", ctaUrl: "#/daftar", active: true },
 ];
+
+type PartnerTier = "utama" | "pendukung" | "komunitas" | "media";
+type EventPartner = {
+  id: number;
+  name: string;
+  tier: PartnerTier;
+  logoUrl: string | null;
+  logoPath: string | null;
+  websiteUrl: string | null;
+  order: number;
+  active: boolean;
+};
+
+const partnerTierLabels: Record<PartnerTier, string> = {
+  utama: "Sponsor Utama",
+  pendukung: "Sponsor Pendukung",
+  komunitas: "Community Partner",
+  media: "Media Partner",
+};
+
+const defaultPartners: EventPartner[] = [
+  { id: -1, name: "Slot Sponsor Utama", tier: "utama", logoUrl: null, logoPath: null, websiteUrl: null, order: 1, active: true },
+  { id: -2, name: "Slot Sponsor Pendukung", tier: "pendukung", logoUrl: null, logoPath: null, websiteUrl: null, order: 1, active: true },
+  { id: -3, name: "Slot Community Partner", tier: "komunitas", logoUrl: null, logoPath: null, websiteUrl: null, order: 1, active: true },
+  { id: -4, name: "Slot Media Partner", tier: "media", logoUrl: null, logoPath: null, websiteUrl: null, order: 1, active: true },
+];
+
+function usePartners(includeInactive = false) {
+  const [partners, setPartners] = useState<EventPartner[]>(defaultPartners);
+  useEffect(() => {
+    const client = supabase;
+    if (!client) return;
+    const load = async () => {
+      let query = client.from("event_partners").select("id_partner,name,tier,logo_path,website_url,sort_order,is_active").order("sort_order").order("name");
+      if (!includeInactive) query = query.eq("is_active", true);
+      const { data } = await query;
+      if (!data?.length) return;
+      setPartners(data.map((row) => ({
+        id: row.id_partner,
+        name: row.name,
+        tier: row.tier as PartnerTier,
+        logoPath: row.logo_path,
+        logoUrl: row.logo_path ? client.storage.from("partner-media").getPublicUrl(row.logo_path).data.publicUrl : null,
+        websiteUrl: row.website_url,
+        order: row.sort_order,
+        active: row.is_active,
+      })));
+    };
+    void load();
+  }, [includeInactive]);
+  return [partners, setPartners] as const;
+}
 
 function useHeroSlides(includeInactive = false) {
   const [slides, setSlides] = useState(defaultHeroes);
@@ -155,7 +208,7 @@ function HeroShowcase() {
   }, [slides.length]);
   return <div className="hero-showcase">
     <div className={`hero-media-slot hero-media-${slide.slot}`} style={slide.imageUrl ? { backgroundImage: `url(${slide.imageUrl})` } : undefined}>
-      {!slide.imageUrl && <div className="hero-placeholder"><Image size={36} /><span>Slot hero {slide.slot}</span><small>Logo / foto dapat diunggah admin</small></div>}
+      {!slide.imageUrl && <div className="hero-placeholder" aria-hidden="true"><span className="inefest-glyph">IF / 04</span></div>}
       <div className="hero-media-copy"><small>HERO 0{slide.slot}</small><h2>{slide.title}</h2><p>{slide.subtitle}</p><a href={slide.ctaUrl}>{slide.ctaLabel} <ArrowRight size={15} /></a></div>
     </div>
     <div className="hero-dots" aria-label="Pilih hero">{slides.map((item, index) => <button key={item.slot} className={index === active ? "active" : ""} onClick={() => setActive(index)} aria-label={`Hero ${item.slot}`} />)}</div>
@@ -164,12 +217,20 @@ function HeroShowcase() {
 
 function Brand({ admin = false }: { admin?: boolean }) {
   return (
-    <Link className="brand" to={admin ? "/admin" : "/"} aria-label="KompetisiKita">
-      <span className="brand-mark"><Trophy size={18} strokeWidth={2.5} /></span>
-      <span>Kompetisi<span>Kita</span></span>
+    <Link className="brand" to={admin ? "/admin" : "/"} aria-label="INEFEST 4.0">
+      <img className="brand-logo" src="/logo-prodi-ti.jpg" alt="Logo Program Studi Teknik Informatika UNIROW" />
+      <span className="brand-wordmark"><b>INEFEST</b><small>INFORMATICS ENGINEERING FESTIVAL · 4.0</small></span>
       {admin && <b className="admin-tag">ADMIN</b>}
     </Link>
   );
+}
+
+function InstitutionIdentity() {
+  return <div className="institution-identity" aria-label="Instansi dan pelaksana INEFEST 4.0">
+    <div><span className="identity-label">Instansi</span><img src="/logo-unirow.jpg" alt="Universitas PGRI Ronggolawe Tuban" /><img src="/logo-prodi-ti.jpg" alt="Program Studi Teknik Informatika UNIROW" /></div>
+    <i />
+    <div><span className="identity-label">Pelaksana</span><img className="himatif-logo" src="/logo-himatif.jpg" alt="HIMATIF UNIROW" /></div>
+  </div>;
 }
 
 function ParticipantHeader() {
@@ -182,6 +243,7 @@ function ParticipantHeader() {
           <Link to="/" onClick={() => setOpen(false)}>Beranda</Link>
           <Link to="/kompetisi" onClick={() => setOpen(false)}>Kompetisi</Link>
           <a href="#cara-kerja" onClick={() => setOpen(false)}>Cara Kerja</a>
+          <a href="#mitra" onClick={() => setOpen(false)}>Mitra</a>
           <a href="#tentang" onClick={() => setOpen(false)}>Tentang</a>
         </nav>
         <div className="nav-actions">
@@ -227,6 +289,31 @@ function CompetitionCard({ item }: { item: Competition }) {
   );
 }
 
+function PartnerLogo({ partner }: { partner: EventPartner }) {
+  const content = partner.logoUrl
+    ? <img src={partner.logoUrl} alt={`Logo ${partner.name}`} loading="lazy" />
+    : <span className="partner-placeholder"><Handshake size={22} /><b>{partner.name}</b><small>Logo mitra</small></span>;
+  return partner.websiteUrl
+    ? <a className={`partner-logo partner-tier-${partner.tier}`} href={partner.websiteUrl} target="_blank" rel="noreferrer">{content}</a>
+    : <div className={`partner-logo partner-tier-${partner.tier}`}>{content}</div>;
+}
+
+function PartnerShowcase() {
+  const [partners] = usePartners();
+  const tiers: PartnerTier[] = ["utama", "pendukung", "komunitas", "media"];
+  return <section className="partner-section" id="mitra">
+    <div className="section">
+      <div className="section-heading partner-heading"><div><p className="kicker dark">Bertumbuh bersama</p><h2>Mitra di balik <em>INEFEST 4.0.</em></h2></div><p>Dukungan yang mempertemukan talenta informatika dengan ekosistem industri, komunitas, dan media.</p></div>
+      <div className="partner-tiers">{tiers.map((tier) => {
+        const items = partners.filter((partner) => partner.active && partner.tier === tier).sort((a, b) => a.order - b.order);
+        if (!items.length) return null;
+        return <section className={`partner-tier-block partner-block-${tier}`} key={tier}><div className="partner-tier-title"><span>{partnerTierLabels[tier]}</span><i /></div><div className="partner-logo-grid">{items.map((partner) => <PartnerLogo partner={partner} key={partner.id} />)}</div></section>;
+      })}</div>
+      <div className="partner-invite"><span>Ingin menjadi bagian dari ekosistem INEFEST?</span><a href="mailto:himatif@unirow.ac.id">Bicarakan kolaborasi <ArrowRight size={15} /></a></div>
+    </div>
+  </section>;
+}
+
 function HomePage() {
   const competitionItems = useCompetitions();
   return (
@@ -237,21 +324,19 @@ function HomePage() {
           <div className="hero-orbit orbit-one" /><div className="hero-orbit orbit-two" />
           <div className="hero-content">
             <div className="hero-copy reveal">
-              <p className="kicker"><Sparkles size={15} /> Panggung talenta Indonesia</p>
-              <h1>Ide hebat layak<br />mendapat <em>panggung.</em></h1>
-              <p className="hero-lead">Temukan kompetisi terbaik, bentuk tim, dan bawa karyamu selangkah lebih dekat menuju dampak nyata.</p>
+              <p className="kicker"><Sparkles size={15} /> HIMATIF mempersembahkan</p>
+              <h1>INEFEST <em>4.0</em></h1>
+              <p className="hero-subtitle">INFORMATICS ENGINEERING FESTIVAL</p>
+              <p className="hero-lead">Festival teknologi, kreativitas, dan kompetisi dari Program Studi Teknik Informatika UNIROW untuk generasi yang siap membangun masa depan.</p>
               <div className="hero-actions">
                 <Link className="button button-lime" to="/kompetisi">Jelajahi kompetisi <ArrowRight size={18} /></Link>
                 <a className="inline-link" href="#cara-kerja"><span className="play-dot">▶</span> Lihat cara kerja</a>
               </div>
-              <div className="trust-row">
-                <div className="avatar-stack"><span>AR</span><span>DK</span><span>SA</span><span>+</span></div>
-                <div><b>4.800+ peserta</b><small>sudah memulai langkahnya</small></div>
-              </div>
+              <InstitutionIdentity />
             </div>
             <div className="hero-stage reveal delay-1"><HeroShowcase /></div>
           </div>
-          <div className="hero-ticker"><span>DESAIN</span><i>✦</i><span>TEKNOLOGI</span><i>✦</i><span>BISNIS</span><i>✦</i><span>FILM</span><i>✦</i><span>DATA</span></div>
+          <div className="hero-ticker"><span>INFORMATIKA</span><i>✦</i><span>INOVASI</span><i>✦</i><span>KOMPETISI</span><i>✦</i><span>KOLABORASI</span><i>✦</i><span>KREATIVITAS</span></div>
         </section>
 
         <section className="section competition-section">
@@ -276,8 +361,10 @@ function HomePage() {
           </div>
         </section>
 
+        <PartnerShowcase />
+
         <section className="cta-section" id="tentang">
-          <div className="cta-card"><span className="cta-star">✦</span><p className="kicker">Kesempatan tidak datang dua kali</p><h2>Siap membawa idemu<br />ke <em>level berikutnya?</em></h2><Link className="button button-lime" to="/daftar">Mulai sekarang <ArrowRight size={18} /></Link></div>
+          <div className="cta-card"><span className="cta-star">✦</span><p className="kicker">Informatics Engineering Festival</p><h2>Siap menjadi bagian<br />dari <em>INEFEST 4.0?</em></h2><Link className="button button-lime" to="/daftar">Mulai sekarang <ArrowRight size={18} /></Link></div>
         </section>
       </main>
       <Footer />
@@ -300,10 +387,10 @@ function Footer() {
   };
   return (
     <footer className="site-footer">
-      <div><Brand /><p>Ruang bertumbuh bagi talenta dan ide terbaik Indonesia.</p></div>
+      <div><Brand /><p>Informatics Engineering Festival oleh Prodi TI UNIROW, dilaksanakan HIMATIF.</p></div>
       <div><b>Jelajahi</b><Link to="/kompetisi">Kompetisi</Link><a href="#cara-kerja">Cara kerja</a></div>
-      <div><b>Bantuan</b><a href="mailto:halo@kompetisikita.id">Pusat bantuan</a><a href="mailto:halo@kompetisikita.id">Hubungi panitia</a></div>
-      <div className="footer-bottom"><button className="secret-admin-trigger" onClick={unlockAdmin} aria-label="Hak cipta KompetisiKita">© 2026 KompetisiKita</button><span>Privasi · Ketentuan</span></div>
+      <div><b>Bantuan</b><a href="mailto:himatif@unirow.ac.id">Pusat bantuan</a><a href="mailto:himatif@unirow.ac.id">Hubungi panitia</a></div>
+      <div className="footer-bottom"><button className="secret-admin-trigger" onClick={unlockAdmin} aria-label="Hak cipta INEFEST 4.0">© 2026 INEFEST 4.0 · HIMATIF UNIROW</button><span>Privasi · Ketentuan</span></div>
     </footer>
   );
 }
@@ -497,12 +584,12 @@ function AdminGuard({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-type AdminView = "overview" | "registrations" | "competitions" | "hero" | "activity";
+type AdminView = "overview" | "registrations" | "competitions" | "hero" | "partners" | "activity";
 
 function AdminDashboard() {
   const navigate = useNavigate(); const [view, setView] = useState<AdminView>("overview"); const [mobileNav, setMobileNav] = useState(false);
   const [rows, setRows] = useState(initialRegistrations); const [selected, setSelected] = useState<typeof rows[number] | null>(null); const [toast, setToast] = useState("");
-  const [adminName, setAdminName] = useState("Moh. Ferdiansah");
+  const [adminName, setAdminName] = useState("Admin INEFEST");
   const [participantCount, setParticipantCount] = useState(1284);
   const [activeCompetitionCount, setActiveCompetitionCount] = useState(competitions.length);
   const competitionItems = useCompetitions();
@@ -557,7 +644,7 @@ function AdminDashboard() {
     setRows((current) => current.filter((row) => row.id !== id)); setSelected(null); setToast("Pendaftaran berhasil dihapus."); setTimeout(() => setToast(""), 2800);
   };
   const logout = async () => { if (supabase) await supabase.auth.signOut(); navigate("/admin/login"); };
-  const label = view === "overview" ? "Ringkasan" : view === "registrations" ? "Verifikasi Pendaftar" : view === "competitions" ? "Kelola Kompetisi" : view === "hero" ? "Tiga Hero" : "Log Aktivitas";
+  const label = view === "overview" ? "Ringkasan" : view === "registrations" ? "Verifikasi Pendaftar" : view === "competitions" ? "Kelola Kompetisi" : view === "hero" ? "Tiga Hero" : view === "partners" ? "Sponsor & Media Partner" : "Log Aktivitas";
   return (
     <div className="admin-app">
       <aside className={mobileNav ? "admin-sidebar open" : "admin-sidebar"}><div className="sidebar-top"><Brand admin /><button onClick={() => setMobileNav(false)}><X /></button></div><nav>
@@ -565,6 +652,7 @@ function AdminDashboard() {
         <button className={view === "registrations" ? "active" : ""} onClick={() => { setView("registrations"); setMobileNav(false); }}><FileCheck2 size={19} /> Verifikasi <span className="nav-count">{rows.filter((row) => row.status === "Pending").length}</span></button>
         <button className={view === "competitions" ? "active" : ""} onClick={() => { setView("competitions"); setMobileNav(false); }}><Trophy size={19} /> Kompetisi</button>
         <button className={view === "hero" ? "active" : ""} onClick={() => { setView("hero"); setMobileNav(false); }}><Image size={19} /> Tiga Hero</button>
+        <button className={view === "partners" ? "active" : ""} onClick={() => { setView("partners"); setMobileNav(false); }}><Handshake size={19} /> Mitra Acara</button>
         <button className={view === "activity" ? "active" : ""} onClick={() => { setView("activity"); setMobileNav(false); }}><Activity size={19} /> Log Aktivitas</button>
       </nav><div className="sidebar-security"><ShieldCheck size={20} /><div><b>Akses terlindungi</b><small>Role: Super Admin</small></div></div><button className="logout-button" onClick={logout}><LogOut size={18} /> Keluar</button></aside>
       <main className="admin-main"><header className="admin-topbar"><button className="admin-menu" onClick={() => setMobileNav(true)}><Menu /></button><div><p>Dashboard / {label}</p><h1>{label}</h1></div><div className="admin-user"><button className="notification"><Bell size={19} /><span /></button><div className="user-avatar">{adminName.split(" ").map((part) => part[0]).slice(0, 2).join("").toUpperCase()}</div><div><b>{adminName}</b><small>Super Admin</small></div><ChevronDown size={16} /></div></header>
@@ -572,6 +660,7 @@ function AdminDashboard() {
         {view === "registrations" && <RegistrationsTable rows={rows} setSelected={setSelected} updateStatus={updateStatus} />}
         {view === "competitions" && <AdminCompetitions items={competitionItems} />}
         {view === "hero" && <HeroManager />}
+        {view === "partners" && <PartnerManager />}
         {view === "activity" && <ActivityLog />}
       </main>
       {selected && <VerificationDrawer item={selected} close={() => setSelected(null)} updateStatus={updateStatus} deleteRegistration={deleteRegistration} />}
@@ -713,6 +802,64 @@ function HeroManager() {
     } finally { setSaving(null); }
   };
   return <div className="admin-content"><div className="page-actions competition-actions"><div><h2>Tiga slot hero</h2><p>Unggah logo atau foto, ubah pesan, lalu aktifkan sesuai kebutuhan.</p></div></div>{message && <div className="form-alert">{message}</div>}<div className="hero-admin-grid">{[1, 2, 3].map((slot) => { const item = slides.find((slide) => slide.slot === slot) ?? defaultHeroes[slot - 1]; return <form className="hero-admin-card" key={`${slot}-${item.id}`} onSubmit={(event) => void save(event, slot)}><div className="hero-admin-preview" style={item.imageUrl ? { backgroundImage: `url(${item.imageUrl})` } : undefined}>{!item.imageUrl && <><Image /><span>Hero {slot}</span></>}<b>0{slot}</b></div><label>Judul<input name="title" defaultValue={item.title} maxLength={120} required /></label><label>Deskripsi<textarea name="subtitle" defaultValue={item.subtitle} maxLength={300} required /></label><div className="two-fields"><label>Teks tombol<input name="ctaLabel" defaultValue={item.ctaLabel} maxLength={40} required /></label><label>Rute<input name="ctaUrl" defaultValue={item.ctaUrl} required /></label></div><label>Logo / foto<input name="image" type="file" accept=".jpg,.jpeg,.png,.webp" /></label><label className="checkbox"><input name="active" type="checkbox" defaultChecked={item.active} /><span>Tampilkan hero ini</span></label><button className="button button-dark button-wide" disabled={saving === slot}>{saving === slot ? "Menyimpan..." : `Simpan hero ${slot}`}</button></form>; })}</div></div>;
+}
+
+function PartnerManager() {
+  const [partners, setPartners] = usePartners(true);
+  const [editing, setEditing] = useState<EventPartner | null>(null);
+  const [open, setOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState("");
+  const tiers: PartnerTier[] = ["utama", "pendukung", "komunitas", "media"];
+  const close = () => { setOpen(false); setEditing(null); setMessage(""); };
+  const save = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); setSaving(true); setMessage("");
+    try {
+      if (!supabase) throw new Error("Supabase belum dikonfigurasi.");
+      const form = new FormData(event.currentTarget);
+      const name = String(form.get("name") ?? "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+      const tier = String(form.get("tier") ?? "") as PartnerTier;
+      const websiteRaw = String(form.get("websiteUrl") ?? "").trim();
+      const order = Number(form.get("order"));
+      if (name.length < 2 || name.length > 100) throw new Error("Nama mitra harus 2–100 karakter.");
+      if (!tiers.includes(tier)) throw new Error("Kelas mitra tidak valid.");
+      if (!Number.isInteger(order) || order < 0 || order > 999) throw new Error("Urutan harus berupa angka 0–999.");
+      let websiteUrl: string | null = null;
+      if (websiteRaw) {
+        const parsed = new URL(websiteRaw);
+        if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error("Alamat situs harus memakai http atau https.");
+        websiteUrl = parsed.toString();
+      }
+      const image = await validateFile(form.get("logo") as File, { maxBytes: 3 * 1_048_576, mime: ["image/jpeg", "image/png", "image/webp"], extensions: [".jpg", ".jpeg", ".png", ".webp"] }, !editing);
+      let logoPath = editing?.logoPath ?? null;
+      if (image) {
+        const nextPath = `${tier}/${crypto.randomUUID()}-${safeFilename(image.name)}`;
+        const { error: uploadError } = await supabase.storage.from("partner-media").upload(nextPath, image, { upsert: false });
+        if (uploadError) throw uploadError;
+        logoPath = nextPath;
+      }
+      const payload = { name, tier, logo_path: logoPath, website_url: websiteUrl, sort_order: order, is_active: form.get("active") === "on" };
+      const query = editing
+        ? supabase.from("event_partners").update(payload).eq("id_partner", editing.id)
+        : supabase.from("event_partners").insert(payload);
+      const { data, error } = await query.select("id_partner").single();
+      if (error) throw error;
+      if (image && editing?.logoPath && editing.logoPath !== logoPath) await supabase.storage.from("partner-media").remove([editing.logoPath]);
+      const saved: EventPartner = { id: data.id_partner, name, tier, logoPath, logoUrl: logoPath ? supabase.storage.from("partner-media").getPublicUrl(logoPath).data.publicUrl : null, websiteUrl, order, active: payload.is_active };
+      setPartners((current) => [...current.filter((item) => item.id !== saved.id && item.id > 0), saved].sort((a, b) => a.order - b.order));
+      close();
+    } catch (error) {
+      setMessage(publicError(error, error instanceof Error ? error.message : "Mitra gagal disimpan."));
+    } finally { setSaving(false); }
+  };
+  const remove = async (partner: EventPartner) => {
+    if (!supabase || partner.id < 1 || !window.confirm(`Hapus ${partner.name} dari daftar mitra?`)) return;
+    const { error } = await supabase.from("event_partners").delete().eq("id_partner", partner.id);
+    if (error) { setMessage("Mitra gagal dihapus."); return; }
+    if (partner.logoPath) await supabase.storage.from("partner-media").remove([partner.logoPath]);
+    setPartners((current) => current.filter((item) => item.id !== partner.id));
+  };
+  return <div className="admin-content partner-admin"><div className="page-actions competition-actions"><div><h2>Sponsor & media partner</h2><p>Kelola logo, kelas, urutan tampil, tautan, dan status setiap mitra INEFEST.</p></div><button className="button button-dark" onClick={() => { setEditing(null); setOpen(true); }}>+ Tambah mitra</button></div>{message && !open && <div className="form-alert error">{message}</div>}<div className="partner-admin-summary">{tiers.map((tier) => <div key={tier}><b>{partners.filter((partner) => partner.id > 0 && partner.tier === tier).length}</b><span>{partnerTierLabels[tier]}</span></div>)}</div><div className="partner-admin-groups">{tiers.map((tier) => <section key={tier}><header><h3>{partnerTierLabels[tier]}</h3><span>{partners.filter((partner) => partner.id > 0 && partner.tier === tier && partner.active).length} aktif</span></header><div className="partner-admin-grid">{partners.filter((partner) => partner.id > 0 && partner.tier === tier).sort((a, b) => a.order - b.order).map((partner) => <article key={partner.id} className={partner.active ? "" : "inactive"}><div className="partner-admin-logo">{partner.logoUrl ? <img src={partner.logoUrl} alt={`Logo ${partner.name}`} /> : <Handshake />}</div><div><b>{partner.name}</b><small>Urutan {partner.order} · {partner.active ? "Ditampilkan" : "Disembunyikan"}</small></div><button className="secondary-button" onClick={() => { setEditing(partner); setOpen(true); }}><Pencil size={14} /> Edit</button><button className="danger-icon" onClick={() => void remove(partner)}><Trash2 size={15} /></button></article>)}{!partners.some((partner) => partner.id > 0 && partner.tier === tier) && <div className="empty-partner-group">Belum ada mitra di kelas ini.</div>}</div></section>)}</div>{open && <div className="drawer-backdrop" onMouseDown={close}><section className="competition-modal partner-modal" onMouseDown={(event) => event.stopPropagation()}><header><div><p>{editing ? "EDIT MITRA" : "MITRA BARU"}</p><h2>{editing ? "Perbarui tampilan mitra." : "Tambahkan kolaborator INEFEST."}</h2></div><button onClick={close}><X /></button></header><form key={editing?.id ?? "new"} className="form-grid" onSubmit={(event) => void save(event)}><label className="full">Nama mitra<input name="name" defaultValue={editing?.name} minLength={2} maxLength={100} required /></label><label>Kelas<select name="tier" defaultValue={editing?.tier ?? "pendukung"}>{tiers.map((tier) => <option key={tier} value={tier}>{partnerTierLabels[tier]}</option>)}</select></label><label>Urutan tampil<input name="order" type="number" min="0" max="999" defaultValue={editing?.order ?? 10} required /></label><label className="full">Situs mitra (opsional)<input name="websiteUrl" type="url" defaultValue={editing?.websiteUrl ?? ""} placeholder="https://..." maxLength={300} /></label><label className="full">Logo {editing ? "pengganti (opsional)" : "mitra"}<input name="logo" type="file" accept=".jpg,.jpeg,.png,.webp" required={!editing} /><small>JPG, PNG, atau WebP · maksimal 3 MB</small></label><label className="checkbox full"><input name="active" type="checkbox" defaultChecked={editing?.active ?? true} /><span>Tampilkan pada halaman publik</span></label>{message && <div className="form-alert error full">{message}</div>}<button className="button button-dark button-wide full" disabled={saving}>{saving ? "Menyimpan..." : "Simpan mitra"}</button></form></section></div>}</div>;
 }
 
 type AuditEntry = { id_log: number; action: string; entity_type: string; entity_id: string | null; metadata: Record<string, string>; created_at: string };

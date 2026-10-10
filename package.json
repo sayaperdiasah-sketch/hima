@@ -1,5 +1,5 @@
 {
-  "name": "kompetisikita",
+  "name": "inefest-4-portal",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,10 +8,11 @@
   },
   "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node scripts/prepare-publish.mjs",
     "preview": "vite preview --host 0.0.0.0",
+    "start": "node server.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "npm run build && node --test tests/build-output.test.mjs"
+    "test": "npm run build && node --test tests/runtime.test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.117.3",
