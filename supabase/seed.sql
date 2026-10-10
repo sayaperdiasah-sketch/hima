@@ -13,3 +13,9 @@ where not exists (
   select 1 from public.kompetisi k where k.nama_kompetisi = s.nama_kompetisi
 );
 
+insert into public.hero_slides (slot_number, title, subtitle, cta_label, cta_url)
+values
+  (1, 'Panggung untuk ide terbaikmu', 'Tampilkan logo utama, foto unggulan, atau kampanye kompetisi di sini.', 'Jelajahi kompetisi', '#/kompetisi'),
+  (2, 'Kompetisi yang menantang', 'Sorot lomba prioritas agar peserta langsung melihat kesempatan terbaik.', 'Lihat jadwal', '#/kompetisi'),
+  (3, 'Saatnya menunjukkan karya', 'Gunakan slot ini untuk foto peserta, sponsor, atau pengumuman penting.', 'Mulai daftar', '#/daftar')
+on conflict (slot_number) do nothing;

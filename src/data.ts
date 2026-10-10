@@ -24,6 +24,7 @@ export type Registration = {
   submittedAt: string;
   status: "Pending" | "Approved" | "Rejected";
   payment: string;
+  note?: string;
 };
 
 export const competitions: Competition[] = [

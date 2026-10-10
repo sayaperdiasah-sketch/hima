@@ -1,6 +1,18 @@
 # KompetisiKita
 
-Portal registrasi kompetisi berbasis React, Vite, dan Supabase. Aplikasi memakai `HashRouter`, sehingga aman saat dimuat ulang di GitHub Pages. Pintu portal admin disembunyikan dari navigasi umum dan hanya menerima akun yang terdapat di tabel `admin_users`.
+Portal registrasi kompetisi berbasis React, Vite, dan Supabase. Aplikasi memakai `HashRouter`, sehingga aman saat dimuat ulang di GitHub Pages. Admin dapat mengelola lomba secara penuh, memantau seluruh pendaftaran, mengelola tiga hero, mengekspor data, dan membaca audit log.
+
+## Lapisan keamanan
+
+Implementasi memakai lebih dari tiga lapisan yang saling melengkapi:
+
+1. Validasi browser terpusat untuk panjang, format, angka, tanggal, nomor WhatsApp, dan URL internal.
+2. Pemeriksaan berkas berdasarkan ekstensi, MIME, ukuran, dan file signature sebelum upload.
+3. Supabase Auth dengan PKCE, konfirmasi email, CAPTCHA produksi, serta allowlist `admin_users`.
+4. Row Level Security untuk profil, kompetisi, pendaftaran, hero, audit log, dan Storage.
+5. Constraint dan trigger database untuk format data, kuota atomik, deadline, dan duplikasi pendaftaran.
+6. Audit log otomatis untuk tambah, ubah, hapus, verifikasi, pendaftaran baru, dan login admin.
+7. Content Security Policy di HTML serta ekspor CSV yang mencegah formula injection.
 
 ## Membuka pintu admin
 
@@ -12,7 +24,7 @@ Pola tersembunyi hanya mengurangi akses iseng; ini bukan lapisan keamanan. Setel
 ## 1. Siapkan Supabase
 
 1. Buat project baru di Supabase.
-2. Buka **SQL Editor**, jalankan seluruh isi `supabase/schema.sql` satu kali.
+2. Project baru: jalankan seluruh isi `supabase/schema.sql`. Project lama: jalankan `supabase/hardening_migration.sql`.
 3. Jika ingin data contoh, jalankan `supabase/seed.sql`.
 4. Buka **Authentication → URL Configuration**:
    - Site URL: `https://USERNAME.github.io/NAMA-REPOSITORY/`
@@ -28,7 +40,7 @@ Skema membuat tabel `profiles`, `admin_users`, `kompetisi`, dan `pendaftaran`; t
 3. Jalankan `npm install`.
 4. Jalankan `npm run dev`.
 
-Tanpa `.env`, aplikasi otomatis berjalan dalam mode demo untuk keperluan preview. Mode ini tidak digunakan setelah Supabase dikonfigurasi.
+Tanpa `.env`, katalog contoh tetap dapat dipreview, tetapi login, pendaftaran, dan portal admin sengaja dinonaktifkan (fail closed).
 
 ## 3. Membuat admin pertama
 
@@ -50,8 +62,12 @@ Setelah admin dibuat, dashboard otomatis membaca:
 - jumlah kompetisi aktif;
 - nama admin yang sedang masuk;
 - bukti pembayaran melalui signed URL privat selama 60 detik.
+- audit log seluruh aktivitas penting;
+- tiga slot hero untuk logo/foto yang dapat diaktifkan atau dinonaktifkan;
+- pencarian, filter kompetisi/status, catatan verifikasi, dan ekspor CSV;
+- CRUD kompetisi lengkap: tambah, edit, draft/aktif/tutup, serta hapus dengan konfirmasi nama.
 
-Admin juga dapat menambahkan kompetisi dan poster langsung dari dashboard.
+Admin juga dapat mengganti poster dan tiga gambar hero langsung dari dashboard. Hapus kompetisi meminta pengetikan nama lomba karena relasi `on delete cascade` dapat menghapus pendaftaran terkait.
 
 ## 4. Deployment GitHub Pages
 
@@ -61,7 +77,7 @@ Admin juga dapat menambahkan kompetisi dan poster langsung dari dashboard.
    - `VITE_SUPABASE_URL`
    - `VITE_SUPABASE_ANON_KEY`
 4. Buka **Settings → Pages → Build and deployment**, pilih **GitHub Actions**.
-5. Push berikutnya otomatis menjalankan `.github/workflows/deploy.yml`.
+5. Push berikutnya otomatis menjalankan `.github/workflows/deploy.yml`. Paket `gh-pages` tidak digunakan agar rantai dependensi lebih kecil dan bebas temuan audit saat ini.
 
 Build memakai `base: "./"` dan semua rute berada di hash (`#/...`), sehingga aset dan navigasi tetap berfungsi pada subpath GitHub Pages.
 
@@ -74,3 +90,14 @@ Build memakai `base: "./"` dan semua rute berada di hash (`#/...`), sehingga ase
 - Dashboard admin membaca tabel yang sama dan memperbarui `status_verifikasi`.
 - Tambah kompetisi menulis ke tabel `kompetisi` dan mengunggah poster ke bucket `posters`.
 - Perubahan database terlihat setelah halaman dimuat ulang; Supabase tetap menjadi sumber data utama.
+
+## Pemeriksaan kualitas
+
+```bash
+npm ci
+npm run typecheck
+npm test
+npm audit --audit-level=high
+```
+
+Build produksi, typecheck, pengujian output, dan audit dependensi harus lulus sebelum deploy.
