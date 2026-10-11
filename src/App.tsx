@@ -640,15 +640,29 @@ function RegistrationPage() {
       const values = validateRegistration(form);
       const file = await validateFile(form.get("payment") as File, { maxBytes: 5 * 1_048_576, mime: ["application/pdf", "image/jpeg", "image/png"], extensions: [".pdf", ".jpg", ".jpeg", ".png"] }, competition.fee > 0);
       if (!supabase) throw new Error("Layanan pendaftaran belum dikonfigurasi.");
+
+      // Pendaftaran guest: tidak wajib login
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) { navigate("/masuk"); return; }
+      const userId: string | null = user?.id ?? null;
+      const folder = userId ?? `guest-${crypto.randomUUID()}`;
+
       let paymentPath: string | null = null;
       if (file) {
-        paymentPath = `${user.id}/${crypto.randomUUID()}-${safeFilename(file.name)}`;
+        paymentPath = `${folder}/${crypto.randomUUID()}-${safeFilename(file.name)}`;
         const { error: uploadError } = await supabase.storage.from("bukti-bayar").upload(paymentPath, file, { cacheControl: "3600", upsert: false });
         if (uploadError) throw uploadError;
       }
-      const { error: insertError } = await supabase.from("pendaftaran").insert({ id_user: user.id, id_kompetisi: competition.id, nama_tim: values.team, nama_ketua: values.leader, instansi: values.institution, no_whatsapp: values.whatsapp, email: values.leaderEmail, bukti_bayar_path: paymentPath });
+
+      const { error: insertError } = await supabase.from("pendaftaran").insert({
+        id_user: userId,
+        id_kompetisi: competition.id,
+        nama_tim: values.team,
+        nama_ketua: values.leader,
+        instansi: values.institution,
+        no_whatsapp: values.whatsapp,
+        email: values.leaderEmail || null,
+        bukti_bayar_path: paymentPath,
+      });
       if (insertError) throw insertError;
       setDone(true);
     } catch (submitError) {
