@@ -23,6 +23,12 @@ export function validateEmail(value: FormDataEntryValue | null) {
   return email;
 }
 
+export function validateEmailOptional(value: FormDataEntryValue | null) {
+  const raw = String(value ?? "").trim();
+  if (!raw) return "";  // kosong = OK
+  return validateEmail(value);
+}
+
 export function validatePassword(value: FormDataEntryValue | null, strict = false) {
   const password = String(value ?? "");
   if (password.length < (strict ? 10 : 6) || password.length > 128) {
@@ -62,7 +68,7 @@ export function validateWhatsappGroupUrl(value: FormDataEntryValue | null) {
 export function validateRegistration(form: FormData, memberCount = 1, individual = false) {
   const leader = {
     nama_lengkap: requireLength("Nama ketua", clean(form.get("leader")), 2, 100),
-    email: validateEmail(form.get("leaderEmail")),
+    email: validateEmailOptional(form.get("leaderEmail")),
     no_whatsapp: validateWhatsapp(form.get("whatsapp")),
     instansi: requireLength("Instansi", clean(form.get("institution")), 2, 140),
   };
