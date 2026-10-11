@@ -513,3 +513,307 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
   .nav-inefest-logo { padding: 4px; }
   .nav-inefest-logo img { width: 30px; height: 30px; }
 }
+
+
+/* Logo INEFEST di header (kanan) */
+.nav-inefest-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 6%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  text-decoration: none;
+  color: #fff;
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.nav-inefest-logo:hover {
+  background: rgb(255 255 255 / 12%);
+  border-color: rgb(124 162 255 / 40%);
+  transform: translateY(-1px);
+}
+.nav-inefest-logo img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: white;
+  flex: 0 0 32px;
+}
+.nav-inefest-mark {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(135deg, #1647d8, #e62d42);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.nav-inefest-text {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.nav-inefest-text b { color: #ff8e97; font-weight: 800; }
+
+@media (max-width: 780px) {
+  .nav-inefest-text { display: none; }
+  .nav-inefest-logo { padding: 4px; }
+  .nav-inefest-logo img,
+  .nav-inefest-mark { width: 30px; height: 30px; }
+}
+
+
+/* ============================================================
+   RESPONSIF TAMBAHAN — mobile, tablet, kecil
+   ============================================================ */
+
+/* --- Tablet (≤ 1024px) --- */
+@media (max-width: 1024px) {
+  .nav-wrap { height: 68px; }
+  .main-nav { gap: 22px; font-size: 13px; }
+  .nav-inefest-logo { font-size: 13px; padding: 5px 12px 5px 5px; }
+  .nav-inefest-logo img,
+  .nav-inefest-mark { width: 28px; height: 28px; flex-basis: 28px; }
+
+  .hero h1 { font-size: clamp(40px, 7vw, 68px); }
+  .hero-lead { font-size: 15px; }
+  .hero-media-slot { min-height: 460px; }
+
+  .competition-grid { gap: 16px; }
+  .poster-compact { min-height: 220px; }
+  .poster-compact strong { font-size: 56px; }
+
+  .site-footer { grid-template-columns: 1.3fr 1fr; gap: 40px; padding: 40px 24px 22px; }
+  .social-list { grid-template-columns: 1fr 1fr; }
+}
+
+/* --- HP besar / tablet kecil (≤ 780px) --- */
+@media (max-width: 780px) {
+  .nav-wrap { width: calc(100% - 24px); height: 62px; }
+  .brand-logo { width: 34px; height: 34px; }
+  .brand-wordmark b { font-size: 15px; }
+  .brand-wordmark small { font-size: 6px; }
+
+  .nav-inefest-logo { padding: 4px; gap: 6px; }
+  .nav-inefest-logo span { display: none; }
+
+  .hero-content { grid-template-columns: 1fr; min-height: auto; }
+  .hero-copy { padding: 48px 0 32px; }
+  .hero h1 { font-size: clamp(36px, 11vw, 56px); }
+  .hero-subtitle { font-size: 10px; }
+  .hero-lead { font-size: 14px; margin-bottom: 26px; }
+  .hero-actions { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .hero-actions .button { width: 100%; }
+  .hero-stage { min-height: 440px; }
+  .hero-media-slot { min-height: 420px; border-radius: 22px; }
+  .hero-media-copy { padding: 28px 24px; }
+  .hero-media-copy h2 { font-size: clamp(24px, 6vw, 36px); }
+  .hero-media-copy p { font-size: 13px; }
+
+  .hero-ticker { position: relative; font-size: 10px; padding-left: 12px; gap: 22px; height: 42px; }
+
+  .institution-identity { margin-top: 26px; padding: 14px 16px; gap: 18px; flex-wrap: wrap; }
+  .institution-identity img,
+  .institution-identity .himatif-logo { width: 54px; height: 54px; padding: 3px; }
+
+  .section { width: calc(100% - 24px); }
+  .competition-section { padding-block: 56px; }
+  .section-heading { margin-bottom: 26px; gap: 16px; }
+  .section-heading h2,
+  .steps-title h2,
+  .cta-card h2 { font-size: clamp(26px, 7vw, 40px); }
+
+  .competition-card { border-radius: 10px; }
+  .competition-body { padding: 18px; }
+  .competition-body h3 { font-size: 17px; }
+  .competition-body > p { font-size: 12.5px; min-height: auto; }
+
+  .steps-section { padding-block: 56px; }
+  .steps-inner { grid-template-columns: 1fr; gap: 32px; }
+  .step { padding: 22px 6px; grid-template-columns: 44px 1fr; gap: 12px; }
+  .step h3 { font-size: 17px; }
+  .step p { font-size: 12.5px; }
+
+  .partner-section { padding: 56px 0; }
+  .partner-logo-grid,
+  .partner-block-utama .partner-logo-grid,
+  .partner-block-media .partner-logo-grid,
+  .partner-block-komunitas .partner-logo-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .partner-logo { min-height: 100px; padding: 14px; }
+  .partner-tier-utama { min-height: 130px; }
+  .partner-heading { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+  .cta-section { padding: 48px 16px; }
+  .cta-card { padding: 42px 20px; }
+  .cta-card .button { width: 100%; }
+
+  .site-footer { grid-template-columns: 1fr; gap: 28px; padding: 36px 20px 20px; }
+  .footer-facts { grid-template-columns: 1fr; gap: 12px; }
+  .footer-bottom { flex-direction: column !important; align-items: flex-start !important; gap: 8px; }
+
+  .light-page .site-header { position: sticky; }
+  .catalog-main, .detail-main { width: calc(100% - 24px); padding-bottom: 60px; }
+  .catalog-hero { padding: 48px 0 32px; }
+  .catalog-hero h1 { font-size: clamp(30px, 9vw, 46px); }
+  .filter-bar { flex-direction: column; gap: 12px; padding: 12px; }
+  .search-field { min-width: auto; width: 100%; padding: 10px 12px; border-right: 0; border-bottom: 1px solid var(--line); }
+  .category-tabs { width: 100%; overflow-x: auto; }
+
+  .detail-grid { grid-template-columns: 1fr; gap: 24px; }
+  .detail-grid > .poster { min-height: 300px; }
+  .detail-copy h1 { font-size: clamp(28px, 8vw, 44px); }
+  .detail-stats { grid-template-columns: 1fr; gap: 12px; }
+  .detail-stats div { padding: 10px 0; border-left: 0; border-bottom: 1px solid var(--line); }
+  .detail-stats div:last-child { border-bottom: 0; }
+
+  .registration-layout { grid-template-columns: 1fr; gap: 24px; margin: 24px auto 48px; }
+  .registration-form h1 { font-size: clamp(26px, 8vw, 36px); }
+  .form-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  .auth-page { grid-template-columns: 1fr; }
+  .auth-art { display: none; }
+  .auth-panel { padding: 90px 20px 40px; }
+  .auth-form-wrap h1 { font-size: 30px; }
+
+  .admin-sidebar { width: 100%; max-width: 280px; }
+  .admin-topbar { padding: 14px 18px; }
+  .admin-content { padding: 20px 18px 40px; }
+
+  .toast { left: 16px; right: 16px; bottom: 16px; }
+}
+
+/* --- HP kecil (≤ 540px) --- */
+@media (max-width: 540px) {
+  .section, .nav-wrap, .hero-content, .catalog-main, .detail-main, .registration-layout {
+    width: calc(100% - 20px);
+  }
+
+  .hero-copy { padding: 36px 0 26px; }
+  .hero h1 { font-size: clamp(32px, 12vw, 46px); letter-spacing: -.06em; }
+  .hero-lead { font-size: 13.5px; line-height: 1.6; }
+  .hero-stage { min-height: 380px; }
+  .hero-media-slot { min-height: 360px; border-radius: 18px; }
+  .hero-media-copy { padding: 22px 18px; }
+  .hero-media-copy h2 { font-size: 22px; }
+  .hero-media-copy p { font-size: 12px; }
+  .hero-dots button { width: 7px; height: 7px; }
+  .hero-dots button.active { width: 22px; }
+
+  .institution-identity { padding: 12px; gap: 12px; width: 100%; }
+  .institution-identity img,
+  .institution-identity .himatif-logo { width: 46px; height: 46px; padding: 2px; }
+  .identity-divider { height: 28px; }
+
+  .section-heading h2,
+  .steps-title h2,
+  .cta-card h2 { font-size: clamp(24px, 8vw, 34px); }
+
+  .poster-compact { min-height: 190px; padding: 18px; }
+  .poster-compact strong { font-size: 46px; }
+  .poster-compact .poster-slash { font-size: 52px; }
+  .poster-compact small { font-size: 9px; right: 18px; bottom: 18px; }
+
+  .competition-body { padding: 16px; }
+  .competition-body h3 { font-size: 16px; }
+  .deadline-row { flex-direction: column; align-items: flex-start; gap: 6px; font-size: 11px; }
+
+  .steps-section { padding-block: 40px; }
+  .step { grid-template-columns: 36px 1fr; padding: 18px 4px; }
+  .step > span { font-size: 11px; }
+  .step h3 { font-size: 15.5px; }
+  .step p { font-size: 12px; }
+
+  .partner-section { padding: 42px 0; }
+  .partner-logo-grid,
+  .partner-block-utama .partner-logo-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .partner-logo { min-height: 88px; padding: 10px; }
+  .partner-tier-utama { min-height: 110px; }
+  .partner-logo img { max-height: 56px; }
+  .partner-invite { flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px 0 0; }
+
+  .cta-card { padding: 34px 16px; border-radius: 12px; }
+
+  .site-footer { padding: 30px 16px 18px; gap: 22px; }
+  .footer-about .footer-desc { font-size: 11.5px; }
+  .footer-facts dd { font-size: 11.5px; }
+  .social-list { grid-template-columns: 1fr; gap: 2px; }
+  .social-meta b { font-size: 11.5px; }
+  .social-meta small { font-size: 10px; }
+
+  .catalog-hero { padding: 36px 0 24px; }
+  .catalog-hero h1 { font-size: clamp(26px, 10vw, 38px); }
+  .filter-bar { padding: 10px; }
+  .category-tabs button { padding: 7px 10px; font-size: 11px; }
+  .result-line { font-size: 12px; }
+
+  .detail-main { padding-top: 24px; }
+  .back-link { font-size: 12px; margin-bottom: 18px; }
+  .detail-lead { font-size: 14px; }
+
+  .registration-form { padding-top: 8px; }
+  .registration-form h1 { font-size: clamp(22px, 9vw, 30px); }
+  .form-stack input, .form-grid input, .review-note textarea { min-height: 44px; font-size: 14px; }
+
+  .admin-login-card { padding: 28px 20px; border-radius: 10px; }
+  .admin-login-card h1 { font-size: 26px; }
+  .security-seal { width: 46px; height: 46px; }
+  .security-seal svg { width: 22px; }
+
+  .button { min-height: 44px; padding: 0 18px; font-size: 13px; }
+  .button-small { min-height: 38px; padding-inline: 14px; font-size: 12px; }
+}
+
+/* --- HP sangat kecil (≤ 380px) --- */
+@media (max-width: 380px) {
+  .hero h1 { font-size: 28px; }
+  .hero-lead { font-size: 12.5px; }
+  .brand-wordmark small { display: none; }
+  .nav-inefest-logo img,
+  .nav-inefest-mark { width: 26px; height: 26px; flex-basis: 26px; }
+
+  .institution-identity img,
+  .institution-identity .himatif-logo { width: 40px; height: 40px; }
+
+  .section-heading h2,
+  .steps-title h2,
+  .cta-card h2 { font-size: 22px; }
+
+  .competition-body h3 { font-size: 15px; }
+  .poster-compact strong { font-size: 38px; }
+  .poster-compact { min-height: 160px; }
+
+  .partner-logo-grid,
+  .partner-block-utama .partner-logo-grid { grid-template-columns: 1fr; }
+
+  .social-meta small { font-size: 9.5px; }
+  .button { font-size: 12.5px; padding: 0 14px; }
+}
+
+/* --- Layar sangat besar (≥ 1440px) --- */
+@media (min-width: 1440px) {
+  .section, .nav-wrap, .hero-content, .catalog-main, .detail-main {
+    width: min(1320px, calc(100% - 64px));
+  }
+  .hero-content { min-height: 700px; }
+  .hero h1 { font-size: clamp(64px, 5.6vw, 92px); }
+}
+
+/* --- Landscape HP (biar tidak sempit vertikal) --- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero { min-height: auto; }
+  .hero-copy { padding: 32px 0 20px; }
+  .hero-stage { min-height: 280px; }
+  .hero-media-slot { min-height: 260px; }
+  .hero-media-copy h2 { font-size: 20px; }
+  .nav-wrap { height: 54px; }
+}

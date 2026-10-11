@@ -261,6 +261,24 @@ function InstitutionIdentity() {
   );
 }
 
+function NavInefestLogo() {
+  const [imgFailed, setImgFailed] = useState(false);
+  return (
+    <Link className="nav-inefest-logo" to="/" aria-label="INEFEST 4.0">
+      {!imgFailed ? (
+        <img
+          src={`${import.meta.env.BASE_URL}inefest.jpg`}
+          alt="Logo INEFEST 4.0"
+          onError={() => setImgFailed(true)}
+        />
+      ) : (
+        <span className="nav-inefest-mark" aria-hidden="true">IF</span>
+      )}
+      <span className="nav-inefest-text">INEFEST <b>4.0</b></span>
+    </Link>
+  );
+}
+
 function ParticipantHeader() {
   const [open, setOpen] = useState(false);
   return (
