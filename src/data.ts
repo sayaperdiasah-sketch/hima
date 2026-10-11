@@ -12,6 +12,19 @@ export type Competition = {
   registered: number;
   theme: "cobalt" | "lime" | "coral" | "ink";
   status: "Aktif" | "Segera" | "Ditutup";
+  posterPath?: string | null;
+  posterUrl?: string | null;
+  participationType?: "individu" | "kelompok";
+  minMembers?: number;
+  maxMembers?: number;
+  whatsappGroupUrl?: string | null;
+};
+
+export type RegistrationMember = {
+  nama_lengkap: string;
+  email: string;
+  no_whatsapp: string;
+  instansi: string;
 };
 
 export type Registration = {
@@ -24,7 +37,9 @@ export type Registration = {
   submittedAt: string;
   status: "Pending" | "Approved" | "Rejected";
   payment: string;
+  groupLink?: string | null;
   note?: string;
+  members?: RegistrationMember[];
 };
 
 export const competitions: Competition[] = [

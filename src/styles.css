@@ -198,43 +198,81 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
 @media (max-width: 1100px) { .hero-admin-grid { grid-template-columns: 1fr; }.hero-admin-card { grid-template-columns: 1fr 1fr; }.hero-admin-preview, .hero-admin-card > .button, .hero-admin-card > .checkbox { grid-column: 1 / -1; } }
 @media (max-width: 760px) { .hero-media-slot { min-height: 430px; }.hero-media-copy { padding: 28px; }.hero-admin-card { grid-template-columns: 1fr; }.hero-admin-card > * { grid-column: auto; }.two-fields { grid-template-columns: 1fr; }.activity-list article { grid-template-columns: auto 1fr; }.activity-list time { grid-column: 2; } }
 
-/* INEFEST identity */
+/* INEFEST identity — diperbesar */
 .institution-identity {
   display:flex;
   width:fit-content;
   max-width:100%;
-  margin-top:38px;
-  padding:12px 16px;
+  margin-top:44px;
+  padding:22px 30px;
   align-items:center;
   justify-content:center;
-  gap:18px;
-  border:1px solid rgb(255 255 255 / 14%);
-  border-radius:14px;
-  background:rgb(4 14 42 / 45%);
-  backdrop-filter:blur(10px);
+  gap:38px;
+  border:1px solid rgb(255 255 255 / 16%);
+  border-radius:18px;
+  background:rgb(4 14 42 / 55%);
+  backdrop-filter:blur(12px);
 }
 .identity-group {
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:10px;
+  gap:18px;
 }
-.identity-group-instansi { padding-right:12px; border-right:1px solid rgb(255 255 255 / 12%); }
-.identity-group-pelaksana { padding-left:6px; }
-.institution-identity img { width:38px; height:38px; padding:2px; border-radius:8px; object-fit:contain; background:white; box-shadow:0 8px 18px rgb(0 0 0 / 12%); }
-.institution-identity .himatif-logo { width:108px; object-fit:contain; }
+.identity-group-instansi { padding-right:26px; border-right:1px solid rgb(255 255 255 / 14%); }
+.identity-group-pelaksana { padding-left:10px; }
+.institution-identity img {
+  width:96px;
+  height:96px;
+  padding:6px;
+  border-radius:16px;
+  object-fit:contain;
+  background:white;
+  box-shadow:0 12px 28px rgb(0 0 0 / 22%);
+  transition:transform .2s ease;
+}
+.institution-identity img:hover {
+  transform:translateY(-3px);
+}
+.institution-identity .himatif-logo {
+  width:96px;
+  height:96px;
+  padding:6px;
+}
 .identity-label {
-  margin-right:2px;
-  color:#7f91bd;
-  font-size:7px;
+  margin-right:6px;
+  color:#8fa3d4;
+  font-size:10px;
   font-weight:800;
-  letter-spacing:.14em;
+  letter-spacing:.18em;
   text-transform:uppercase;
   writing-mode:vertical-rl;
   transform:rotate(180deg);
   text-align:center;
 }
-.site-footer .brand-logo { width:44px; height:44px; }.site-footer .brand-wordmark small { font-size:7px; }
+.site-footer .brand-logo { width:44px; height:44px; }
+.site-footer .brand-wordmark small { font-size:7px; }
+
+/* Responsif */
+@media (max-width:1050px) {
+  .institution-identity img,
+  .institution-identity .himatif-logo { width:80px; height:80px; }
+}
+@media (max-width:780px) {
+  .institution-identity { margin-top:32px; padding:18px 22px; gap:24px; }
+  .institution-identity img,
+  .institution-identity .himatif-logo { width:70px; height:70px; padding:5px; }
+  .identity-group { gap:14px; }
+  .identity-group-instansi { padding-right:18px; }
+}
+@media (max-width:540px) {
+  .institution-identity { width:100%; padding:18px; align-items:stretch; flex-direction:column; gap:16px; }
+  .identity-group-instansi { padding-right:0; padding-bottom:16px; border-right:0; border-bottom:1px solid rgb(255 255 255 / 14%); }
+  .identity-group-pelaksana { padding-left:0; }
+  .identity-label { writing-mode:initial; transform:none; }
+  .institution-identity img,
+  .institution-identity .himatif-logo { width:62px; height:62px; }
+}
 
 /* Partner hierarchy */
 .partner-section { padding:100px 0; color:white; background:radial-gradient(circle at 8% 18%,rgb(30 84 220 / 24%),transparent 26%),radial-gradient(circle at 92% 80%,rgb(222 44 67 / 20%),transparent 28%),#06112b; }
@@ -263,3 +301,169 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
 @media (max-width:780px) { .brand-wordmark small { font-size:5.5px; }.institution-identity { margin-top:30px; }.partner-logo-grid,.partner-block-utama .partner-logo-grid,.partner-block-media .partner-logo-grid,.partner-block-komunitas .partner-logo-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.partner-admin-summary { grid-template-columns:repeat(2,1fr); }.partner-admin-grid article { grid-template-columns:58px 1fr auto; }.partner-admin-grid article .danger-icon { grid-column:3; }.partner-admin-logo { width:52px; }.partner-heading { align-items:flex-start; }.reports-grid { grid-template-columns:1fr; }.participant-actions { align-items:stretch; }.participant-actions .button,.participant-actions .secondary-button { flex:1; } }
 @media (max-width:540px) { .brand-logo { width:34px; height:34px; }.brand-wordmark b { font-size:15px; }.brand-wordmark small { display:none; }.hero-subtitle { font-size:9px; letter-spacing:.14em; }.institution-identity { width:100%; align-items:stretch; flex-direction:column; }.institution-identity > i { width:100%; height:1px; }.identity-label { writing-mode:initial; transform:none; }.institution-identity .himatif-logo { width:130px; }.partner-section { padding:72px 0; }.partner-logo-grid,.partner-block-utama .partner-logo-grid,.partner-block-media .partner-logo-grid,.partner-block-komunitas .partner-logo-grid { grid-template-columns:1fr 1fr; }.partner-logo { min-height:110px; padding:15px; }.partner-tier-utama { min-height:140px; }.partner-invite { align-items:flex-start; flex-direction:column; gap:14px; }.partner-admin-summary { grid-template-columns:1fr 1fr; }.partner-admin-grid article { grid-template-columns:54px 1fr; }.partner-admin-grid article .secondary-button,.partner-admin-grid article .danger-icon { grid-column:auto; }.partner-admin-grid article .secondary-button { grid-column:1 / 2; }.partner-admin-grid article .danger-icon { grid-column:2; justify-self:end; min-height:40px; }.report-actions { width:100%; }.report-actions > * { flex:1; }.status-bars > div,.report-list > div { grid-template-columns:1fr 42px; }.status-bars > div > i,.report-list > div > i { grid-column:1 / -1; grid-row:2; } }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior:auto!important; animation:none!important; transition:none!important; } }
+
+
+/* Footer — rapi, monokrom, isi ruang */
+.site-footer {
+  display: grid;
+  padding: 44px max(20px, calc((100% - 1180px)/2)) 24px;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 56px;
+  color: #a8adba;
+  background: #06112b;
+  font-size: 13px;
+  border-top: 1px solid rgb(255 255 255 / 6%);
+}
+.site-footer > div { display: flex; flex-direction: column; gap: 10px; }
+
+/* --- About --- */
+.footer-about .brand { margin-bottom: 2px; }
+.footer-about .footer-org {
+  display: grid;
+  gap: 2px;
+  color: #e6e9f2;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
+}
+.footer-about .footer-org b { color: #fff; font-weight: 700; }
+.footer-about .footer-org span { color: #9aa3b8; font-size: 12px; }
+.footer-about .footer-desc {
+  color: #9aa3b8;
+  font-size: 12px;
+  line-height: 1.65;
+  margin: 4px 0 2px;
+  max-width: 480px;
+}
+.footer-about .footer-desc b { color: #d7deef; font-weight: 700; }
+
+.footer-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 24px;
+  margin: 12px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px solid rgb(255 255 255 / 7%);
+}
+.footer-facts > div { display: grid; gap: 3px; }
+.footer-facts > div:nth-child(3) { grid-column: 1 / -1; }
+.footer-facts dt {
+  color: #6b7488;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.footer-facts dd {
+  margin: 0;
+  color: #c8cede;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.footer-facts dd a {
+  color: #8fb1ff;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .2s;
+}
+.footer-facts dd a:hover { border-bottom-color: #8fb1ff; }
+
+/* --- Terhubung --- */
+.footer-social > b {
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.social-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.social-list li { min-width: 0; }
+.social-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px 6px 0;
+  color: #c8cede;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: color .2s, transform .2s;
+}
+.social-list a:hover { color: #fff; transform: translateX(2px); }
+.social-list a:hover svg { color: #fff; }
+.social-list svg {
+  flex: 0 0 18px;
+  color: #7d879e;
+  transition: color .2s;
+}
+.social-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  line-height: 1.25;
+}
+.social-meta b {
+  color: #e6e9f2;
+  font-size: 12px;
+  font-weight: 600;
+}
+.social-meta small {
+  color: #7d879e;
+  font-size: 10.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.social-list a:hover .social-meta small { color: #a8b4d0; }
+
+/* --- Bottom --- */
+.footer-bottom {
+  grid-column: 1 / -1;
+  flex-direction: row !important;
+  padding-top: 20px;
+  margin-top: 4px;
+  border-top: 1px solid #232a3c;
+  justify-content: space-between;
+  align-items: center;
+  color: #6b7488;
+  font-size: 11.5px;
+}
+.footer-bottom .secret-admin-trigger {
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  cursor: default;
+  font-size: inherit;
+}
+.footer-bottom .secret-admin-trigger:focus-visible {
+  outline: 1px dashed var(--lime);
+  outline-offset: 5px;
+}
+
+/* Responsif */
+@media (max-width: 900px) {
+  .site-footer {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 40px 24px 22px;
+  }
+  .footer-bottom {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px;
+  }
+}
+@media (max-width: 540px) {
+  .site-footer { padding: 32px 20px 18px; gap: 24px; }
+  .footer-facts { grid-template-columns: 1fr; gap: 12px; }
+  .footer-facts > div:nth-child(3) { grid-column: auto; }
+  .social-list { grid-template-columns: 1fr; gap: 2px; }
+}
+

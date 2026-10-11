@@ -17,9 +17,9 @@ Portal **Informatics Engineering Festival 4.0** milik Program Studi Teknik Infor
 ## Menyiapkan Supabase
 
 1. Untuk proyek baru, jalankan `supabase/schema.sql` di SQL Editor.
-2. Untuk proyek yang sudah memakai versi lama, jalankan `supabase/hardening_migration.sql` satu kali.
+2. Untuk proyek lama, jalankan `supabase/hardening_migration.sql` satu kali bila belum pernah, lalu terapkan migration yang belum dijalankan di `supabase/migrations` secara berurutan.
 3. Salin `.env.example` menjadi `.env.local` dan isi URL serta anon key proyek.
-4. Buat admin di Supabase Auth, lalu masukkan UUID-nya ke tabel `admin_users` seperti instruksi pada akhir skema.
+4. Buat admin di Supabase Auth, lalu masukkan UUID-nya ke tabel `admin_users` seperti instruksi pada akhir skema. Akun peserta lama tidak dihapus; pendaftaran baru tidak memerlukan akun.
 
 Admin dibuka dengan `Alt+Shift+A` atau lima ketukan pada teks hak cipta di footer. Penyembunyian rute bukan lapisan keamanan; akses tetap diperiksa oleh Supabase Auth, allowlist `admin_users`, dan RLS.
 

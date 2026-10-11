@@ -8,3 +8,10 @@ coverage/
 *.log
 .DS_Store
 .playwright-cli/
+
+# Backup files
+*.bak
+*.bak[0-9]*
+*.bak-*
+src/App.tsx.bak*
+src/styles.css.bak*

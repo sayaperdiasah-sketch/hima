@@ -117,7 +117,7 @@ type HeroSlide = {
 const defaultHeroes: HeroSlide[] = [
   { id: 1, slot: 1, title: "Teknologi bertemu kreativitas", subtitle: "Panggung utama INEFEST 4.0 untuk karya, kompetisi, dan kolaborasi.", imageUrl: null, imagePath: null, ctaLabel: "Jelajahi kompetisi", ctaUrl: "#/kompetisi", active: true },
   { id: 2, slot: 2, title: "Berani membangun masa depan", subtitle: "Temukan tantangan informatika yang sesuai dengan talenta terbaikmu.", imageUrl: null, imagePath: null, ctaLabel: "Lihat jadwal", ctaUrl: "#/kompetisi", active: true },
-  { id: 3, slot: 3, title: "Tumbuh lewat kolaborasi", subtitle: "INEFEST mempertemukan peserta, komunitas, sponsor, dan media partner.", imageUrl: null, imagePath: null, ctaLabel: "Mulai daftar", ctaUrl: "#/daftar", active: true },
+  { id: 3, slot: 3, title: "Tumbuh lewat kolaborasi", subtitle: "Ikuti keseruan di balik layar INEFEST 4.0 lewat kanal resmi kami.", imageUrl: null, imagePath: null, ctaLabel: "Ikuti Instagram", ctaUrl: "https://instagram.com/himatif_unirow", active: true },
 ];
 
 type PartnerTier = "utama" | "pendukung" | "komunitas" | "media";
@@ -210,16 +210,35 @@ function HeroShowcase() {
   return <div className="hero-showcase">
     <div className={`hero-media-slot hero-media-${slide.slot}`} style={slide.imageUrl ? { backgroundImage: `url(${slide.imageUrl})` } : undefined}>
       {!slide.imageUrl && <div className="hero-placeholder" aria-hidden="true"><span className="inefest-glyph">IF / 04</span></div>}
-      <div className="hero-media-copy"><small>HERO 0{slide.slot}</small><h2>{slide.title}</h2><p>{slide.subtitle}</p><a href={slide.ctaUrl}>{slide.ctaLabel} <ArrowRight size={15} /></a></div>
+      <div className="hero-media-copy"><h2>{slide.title}</h2><p>{slide.subtitle}</p><a href={slide.ctaUrl}>{slide.ctaLabel} <ArrowRight size={15} /></a></div>
     </div>
     <div className="hero-dots" aria-label="Pilih hero">{slides.map((item, index) => <button key={item.slot} className={index === active ? "active" : ""} onClick={() => setActive(index)} aria-label={`Hero ${item.slot}`} />)}</div>
   </div>;
 }
 
+function SocialIcon({ name }: { name: "instagram" | "whatsapp" | "facebook" | "tiktok" | "youtube" | "x" }) {
+  const size = 18;
+  const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "currentColor" as const, "aria-hidden": true };
+  switch (name) {
+    case "instagram":
+      return <svg {...common}><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.22 1 .48 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c0 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2 0-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c0-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.07-1.1 0-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.4 1-.4 2.1C2.6 9.8 2.6 10.2 2.6 12s0 2.2.1 3.4c0 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .4 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1 0 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.4-1 .4-2.1.1-1.2.1-1.6.1-3.4s0-2.2-.1-3.4c0-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.4-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1a4.9 4.9 0 1 0 0 9.8 4.9 4.9 0 0 0 0-9.8zm0 8a3.1 3.1 0 1 1 0-6.2 3.1 3.1 0 0 1 0 6.2zm6.3-8.2a1.1 1.1 0 1 1-2.3 0 1.1 1.1 0 0 1 2.3 0z"/></svg>;
+    case "whatsapp":
+      return <svg {...common}><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.8c0 1.9.5 3.7 1.5 5.3L2 22l5-1.6c1.5.8 3.3 1.3 5 1.3 5.4 0 9.8-4.4 9.8-9.8S17.4 2 12.04 2zm0 1.8c4.4 0 8 3.6 8 8s-3.6 8-8 8c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .9.9-2.9-.2-.3c-.9-1.3-1.4-2.8-1.4-4.3 0-4.4 3.6-8 8.2-8zm-3 4.3c-.2 0-.5.1-.7.4-.2.2-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.7 2.7 4.2 3.7 2.1.8 2.5.7 3 .6.4-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1-.1-.1-.2-.2-.5-.3l-1.6-.8c-.2-.1-.4-.1-.6.1l-.6.8c-.1.2-.3.2-.5.1-.2-.1-.9-.3-1.7-1-.6-.6-1-1.2-1.1-1.4-.1-.2 0-.3.1-.4l.4-.5c.1-.2.2-.3.3-.5.1-.2 0-.3 0-.4l-.7-1.7c-.2-.4-.4-.4-.5-.4h-.3z"/></svg>;
+    case "facebook":
+      return <svg {...common}><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.5 1.5-3.9 3.78-3.9 1.1 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.8 8.44-4.94 8.44-9.94z"/></svg>;
+    case "tiktok":
+      return <svg {...common}><path d="M16.5 2h-3v13.6a2.6 2.6 0 1 1-2.6-2.6c.2 0 .4 0 .6.1V9.9a5.9 5.9 0 1 0 5 5.8V9.2c1 .7 2.2 1.1 3.5 1.1V7.2c-2 0-3.5-1.6-3.5-3.5V2z"/></svg>;
+    case "youtube":
+      return <svg {...common}><path d="M21.6 7.2s-.2-1.4-.8-2c-.7-.8-1.6-.8-2-.9C16 4.1 12 4.1 12 4.1h0s-4 0-6.8.2c-.4 0-1.3 0-2 .9-.6.6-.8 2-.8 2S2.2 8.8 2.2 10.5v1.6c0 1.6.2 3.3.2 3.3s.2 1.4.8 2c.7.8 1.7.8 2.1.9 1.5.1 6.7.2 6.7.2s4 0 6.8-.2c.4 0 1.3-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.3v-1.6c0-1.6-.2-3.3-.2-3.3zM10 14.6V8.7l5.2 3-5.2 2.9z"/></svg>;
+    case "x":
+      return <svg {...common}><path d="M17.5 3h3.2l-7 8 8.3 10h-6.5l-5-6.1-5.7 6.1H1.5l7.5-8.5L1 3h6.7l4.5 5.6L17.5 3zm-1.1 16h1.7L7.7 4.8H5.9L16.4 19z"/></svg>;
+  }
+}
+
 function Brand({ admin = false }: { admin?: boolean }) {
   return (
     <Link className="brand" to={admin ? "/admin" : "/"} aria-label="INEFEST 4.0">
-      <img className="brand-logo" src="/logo-prodi-ti.jpg" alt="Logo Program Studi Teknik Informatika UNIROW" />
+      <img className="brand-logo" src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" />
       <span className="brand-wordmark"><b>INEFEST</b><small>INFORMATICS ENGINEERING FESTIVAL · 4.0</small></span>
       {admin && <b className="admin-tag">ADMIN</b>}
     </Link>
@@ -231,12 +250,12 @@ function InstitutionIdentity() {
     <div className="institution-identity" aria-label="Instansi dan pelaksana INEFEST 4.0">
       <div className="identity-group identity-group-instansi">
         <span className="identity-label">Instansi</span>
-        <img src="/logo-unirow.jpg" alt="Universitas PGRI Ronggolawe Tuban" />
-        <img src="/logo-prodi-ti.jpg" alt="Program Studi Teknik Informatika UNIROW" />
+        <img src={`${import.meta.env.BASE_URL}logo-unirow.jpg`} alt="Universitas PGRI Ronggolawe Tuban" />
+        <img src={`${import.meta.env.BASE_URL}logo-prodi-ti.jpg`} alt="Program Studi Teknik Informatika UNIROW" />
       </div>
       <div className="identity-group identity-group-pelaksana">
         <span className="identity-label">Pelaksana</span>
-        <img className="himatif-logo" src="/logo-himatif.jpg" alt="HIMATIF UNIROW" />
+        <img className="himatif-logo" src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" />
       </div>
     </div>
   );
@@ -356,16 +375,44 @@ function HomePage() {
           <div className="competition-grid">{competitionItems.slice(0, 3).map((item) => <CompetitionCard key={item.id} item={item} />)}</div>
         </section>
 
-        <section className="steps-section" id="cara-kerja">
+                <section className="steps-section" id="cara-kerja">
           <div className="section steps-inner">
-            <div className="steps-title"><p className="kicker dark">Mulai dari sini</p><h2>Empat langkah.<br /><em>Satu peluang besar.</em></h2><p>Proses ringkas agar energimu tetap fokus pada karya terbaik.</p></div>
+            <div className="steps-title">
+              <p className="kicker dark">Mulai dari sini</p>
+              <h2>Empat langkah.<br /><em>Satu peluang besar.</em></h2>
+              <p>Proses ringkas agar energimu tetap fokus pada karya terbaik.</p>
+            </div>
             <div className="steps-list">
               {[
-                ["01", "Buat akun", "Daftar dengan email aktif dan lengkapi profil peserta."],
-                ["02", "Pilih kompetisi", "Temukan kategori yang paling sesuai dengan potensimu."],
-                ["03", "Kirim pendaftaran", "Isi data tim, unggah berkas, lalu lakukan pembayaran."],
-                ["04", "Pantau status", "Dapatkan pembaruan verifikasi langsung dari dashboard."],
-              ].map(([no, title, text]) => <div className="step" key={no}><span>{no}</span><div><h3>{title}</h3><p>{text}</p></div></div>)}
+                {
+                  no: "01",
+                  title: "Pilih kompetisi",
+                  text: "Jelajahi kategori, cek hadiah, kuota, dan tenggat — lalu tentukan yang paling sesuai.",
+                },
+                {
+                  no: "02",
+                  title: "Isi formulir pendaftaran",
+                  text: "Cukup data tim dan kontak ketua. Tanpa registrasi akun, tanpa berkas tambahan.",
+                },
+                {
+                  no: "03",
+                  title: "Upload bukti pembayaran",
+                  text: "Hanya untuk lomba berbayar. Lomba gratis? Langsung kirim tanpa unggah apapun.",
+                },
+                {
+                  no: "04",
+                  title: "Dapatkan konfirmasi",
+                  text: "Status diverifikasi maksimal 2×24 jam. Info grup WhatsApp dikirim setelah disetujui.",
+                },
+              ].map(({ no, title, text }) => (
+                <div className="step" key={no}>
+                  <span>{no}</span>
+                  <div>
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -373,7 +420,7 @@ function HomePage() {
         <PartnerShowcase />
 
         <section className="cta-section" id="tentang">
-          <div className="cta-card"><span className="cta-star">✦</span><p className="kicker">Informatics Engineering Festival</p><h2>Siap menjadi bagian<br />dari <em>INEFEST 4.0?</em></h2><Link className="button button-lime" to="/daftar">Mulai sekarang <ArrowRight size={18} /></Link></div>
+          <div className="cta-card"><span className="cta-star">✦</span><p className="kicker">Informatics Engineering Festival</p><h2>Siap menjadi bagian<br />dari <em>INEFEST 4.0?</em></h2><Link className="button button-lime" to="https://instagram.com/himatif_unirow">Ikuti Instagram <ArrowRight size={18} /></Link></div>
         </section>
       </main>
       <Footer />
@@ -394,12 +441,71 @@ function Footer() {
     }
     window.setTimeout(() => setTapCount(0), 2500);
   };
+
+  const waNumber = "6281234567890";
+  const waMessage = encodeURIComponent("Halo HIMATIF, saya ingin bertanya tentang INEFEST 4.0.");
+
+  const socials = [
+    { name: "instagram" as const, href: "https://instagram.com/himatif_unirow", label: "Instagram HIMATIF", handle: "@himatif_unirow" },
+    { name: "instagram" as const, href: "https://instagram.com/inefest_3.0", label: "Instagram INEFEST", handle: "@inefest_3.0" },
+    { name: "instagram" as const, href: "https://instagram.com/teknik.informatika_unirow", label: "Instagram Prodi TI", handle: "@teknik.informatika_unirow" },
+    { name: "whatsapp" as const, href: `https://wa.me/${waNumber}?text=${waMessage}`, label: "WhatsApp Panitia", handle: "Chat langsung" },
+    { name: "facebook" as const, href: "https://facebook.com/himatiftuban", label: "Facebook", handle: "HIMA TIF Tuban" },
+    { name: "tiktok" as const, href: "https://tiktok.com/@himatif_unirow", label: "TikTok", handle: "@himatif_unirow" },
+    { name: "youtube" as const, href: "https://youtube.com/@himatif_unirow", label: "YouTube", handle: "HIMATIF UNIROW" },
+  ];
+
   return (
     <footer className="site-footer">
-      <div><Brand /><p>Informatics Engineering Festival oleh Prodi TI UNIROW, dilaksanakan HIMATIF.</p></div>
-      <div><b>Jelajahi</b><Link to="/kompetisi">Kompetisi</Link><a href="#cara-kerja">Cara kerja</a></div>
-      <div><b>Bantuan</b><a href="mailto:himatif@unirow.ac.id">Pusat bantuan</a><a href="mailto:himatif@unirow.ac.id">Hubungi panitia</a></div>
-      <div className="footer-bottom"><button className="secret-admin-trigger" onClick={unlockAdmin} aria-label="Hak cipta INEFEST 4.0">© 2026 INEFEST 4.0 · HIMATIF UNIROW</button><span>Privasi · Ketentuan</span></div>
+      <div className="footer-about">
+        <Brand />
+        <p className="footer-org">
+          <b>Himpunan Mahasiswa Teknik Informatika (HIMATIF)</b>
+          <span>Universitas PGRI Ronggolawe Tuban</span>
+        </p>
+        <p className="footer-desc">
+          Wadah kolaborasi dan pengembangan mahasiswa Teknik Informatika UNIROW,
+          sekaligus penyelenggara resmi <b>INEFEST 4.0</b>.
+        </p>
+        <dl className="footer-facts">
+          <div>
+            <dt>Naungan</dt>
+            <dd>Prodi S1 Teknik Informatika, Fakultas Teknik, UNIROW Tuban</dd>
+          </div>
+          <div>
+            <dt>Alamat</dt>
+            <dd>Jl. Manunggal No. 61, Tuban, Jawa Timur</dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd><a href="mailto:himatif@unirow.ac.id">himatif@unirow.ac.id</a></dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="footer-social">
+        <b>Terhubung</b>
+        <ul className="social-list">
+          {socials.map((s) => (
+            <li key={s.label}>
+              <a href={s.href} target="_blank" rel="noreferrer" aria-label={s.label}>
+                <SocialIcon name={s.name} />
+                <span className="social-meta">
+                  <b>{s.label}</b>
+                  <small>{s.handle}</small>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="footer-bottom">
+        <button className="secret-admin-trigger" onClick={unlockAdmin} aria-label="Hak cipta INEFEST 4.0">
+          © 2026 INEFEST 4.0 · HIMATIF UNIROW
+        </button>
+        <span>Privasi · Ketentuan</span>
+      </div>
     </footer>
   );
 }

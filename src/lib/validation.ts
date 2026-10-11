@@ -44,12 +44,51 @@ export function validateWhatsapp(value: FormDataEntryValue | null) {
   return phone;
 }
 
-export function validateRegistration(form: FormData) {
+export function validateWhatsappGroupUrl(value: FormDataEntryValue | null) {
+  const rawUrl = clean(value);
+  if (!rawUrl) return null;
+  let url: URL;
+  try {
+    url = new URL(rawUrl);
+  } catch {
+    throw new ValidationError("Tautan grup WhatsApp tidak valid.");
+  }
+  if (url.protocol !== "https:" || url.hostname !== "chat.whatsapp.com" || url.username || url.password || url.port || !/^\/[A-Za-z0-9_-]+\/?$/.test(url.pathname)) {
+    throw new ValidationError("Gunakan tautan undangan https://chat.whatsapp.com yang valid.");
+  }
+  return url.toString();
+}
+
+export function validateRegistration(form: FormData, memberCount = 1, individual = false) {
+  const leader = {
+    nama_lengkap: requireLength("Nama ketua", clean(form.get("leader")), 2, 100),
+    email: validateEmail(form.get("leaderEmail")),
+    no_whatsapp: validateWhatsapp(form.get("whatsapp")),
+    instansi: requireLength("Instansi", clean(form.get("institution")), 2, 140),
+  };
+  if (!Number.isInteger(memberCount) || memberCount < 1 || memberCount > 20) {
+    throw new ValidationError("Jumlah anggota tidak valid.");
+  }
+
+  const members = [leader];
+  for (let index = 1; index < memberCount; index += 1) {
+    members.push({
+      nama_lengkap: requireLength(`Nama anggota ${index + 1}`, clean(form.get(`member-${index}-name`)), 2, 100),
+      email: validateEmail(form.get(`member-${index}-email`)),
+      no_whatsapp: validateWhatsapp(form.get(`member-${index}-whatsapp`)),
+      instansi: requireLength(`Instansi anggota ${index + 1}`, clean(form.get(`member-${index}-institution`)), 2, 140),
+    });
+  }
+
   return {
-    team: requireLength("Nama tim", clean(form.get("team")), 2, 80),
-    leader: requireLength("Nama ketua", clean(form.get("leader")), 2, 100),
-    institution: requireLength("Instansi", clean(form.get("institution")), 2, 140),
-    whatsapp: validateWhatsapp(form.get("whatsapp")),
+    team: individual
+      ? `Individu - ${leader.nama_lengkap}`.slice(0, 80)
+      : requireLength("Nama tim", clean(form.get("team")), 2, 80),
+    leader: leader.nama_lengkap,
+    leaderEmail: leader.email,
+    institution: leader.instansi,
+    whatsapp: leader.no_whatsapp,
+    members,
   };
 }
 
@@ -58,10 +97,17 @@ export function validateCompetition(form: FormData) {
   const quota = Number(form.get("quota"));
   const deadline = new Date(String(form.get("deadline") ?? ""));
   const status = clean(form.get("status")) || "aktif";
+  const participationType = clean(form.get("participationType")) || "kelompok";
+  const whatsappGroupUrl = validateWhatsappGroupUrl(form.get("whatsappGroupUrl"));
+  if (!["individu", "kelompok"].includes(participationType)) throw new ValidationError("Jenis lomba tidak valid.");
+  const minMembers = participationType === "individu" ? 1 : Number(form.get("minMembers"));
+  const maxMembers = participationType === "individu" ? 1 : Number(form.get("maxMembers"));
   if (!Number.isInteger(fee) || fee < 0 || fee > 100_000_000) throw new ValidationError("Biaya pendaftaran tidak valid.");
   if (!Number.isInteger(quota) || quota < 1 || quota > 100_000) throw new ValidationError("Kuota harus 1–100.000 tim.");
+  if (participationType === "kelompok" && (!Number.isInteger(minMembers) || !Number.isInteger(maxMembers) || minMembers < 2 || maxMembers < minMembers || maxMembers > 20)) throw new ValidationError("Jumlah anggota kelompok harus 2–20 orang dan batas minimum tidak boleh melebihi maksimum.");
   if (Number.isNaN(deadline.getTime()) || deadline.getTime() <= Date.now()) throw new ValidationError("Batas pendaftaran harus di masa depan.");
   if (!["draft", "aktif", "ditutup"].includes(status)) throw new ValidationError("Status kompetisi tidak valid.");
+  if (status === "aktif" && !whatsappGroupUrl) throw new ValidationError("Tautan grup WhatsApp wajib diisi sebelum kompetisi diaktifkan.");
   return {
     name: requireLength("Nama kompetisi", clean(form.get("name")), 3, 140),
     category: requireLength("Kategori", clean(form.get("category")), 2, 80),
@@ -70,6 +116,10 @@ export function validateCompetition(form: FormData) {
     description: requireLength("Deskripsi", clean(form.get("description")), 20, 2_000),
     fee,
     quota,
+    participationType: participationType as "individu" | "kelompok",
+    minMembers,
+    maxMembers,
+    whatsappGroupUrl,
     deadlineIso: deadline.toISOString(),
     status: status as "draft" | "aktif" | "ditutup",
   };
@@ -109,6 +159,16 @@ export async function validateFile(file: File | null, rule: FileRule, required =
 export function publicError(error: unknown, fallback: string) {
   if (error instanceof ValidationError) return error.message;
   const code = typeof error === "object" && error && "code" in error ? String(error.code) : "";
+  const authMessages: Record<string, string> = {
+    email_not_confirmed: "Email belum dikonfirmasi. Buka tautan konfirmasi di email sebelum masuk.",
+    invalid_credentials: "Email atau kata sandi salah. Periksa kembali, atau gunakan reset kata sandi.",
+    weak_password: "Kata sandi terlalu mudah. Gunakan minimal 10 karakter yang mengandung huruf dan angka.",
+    over_email_send_rate_limit: "Terlalu banyak email dikirim. Tunggu beberapa saat sebelum mencoba lagi.",
+    over_request_rate_limit: "Terlalu banyak percobaan. Tunggu beberapa saat sebelum mencoba lagi.",
+    signup_disabled: "Pendaftaran akun sedang dinonaktifkan. Hubungi panitia.",
+    redirect_to_not_allowed: "Alamat kembali dari email belum diizinkan. Panitia perlu menambahkan domain situs ke URL Configuration Supabase.",
+  };
+  if (authMessages[code]) return authMessages[code];
   if (code === "23505") return "Data yang sama sudah terdaftar.";
   if (code === "42501") return "Anda tidak memiliki izin untuk tindakan ini.";
   return fallback;

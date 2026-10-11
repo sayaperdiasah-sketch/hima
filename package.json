@@ -6,14 +6,17 @@
   "engines": {
     "node": ">=22"
   },
-  "scripts": {
+    "scripts": {
     "dev": "vite --host 0.0.0.0",
-    "build": "vite build && node scripts/prepare-publish.mjs",
+    "build": "vite build",
     "preview": "vite preview --host 0.0.0.0",
     "start": "node server.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "npm run build && node --test tests/runtime.test.mjs"
+    "test": "npm run build && node --test tests/runtime.test.mjs",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
+
   "dependencies": {
     "@supabase/supabase-js": "^2.117.3",
     "lucide-react": "^1.55.0",
@@ -25,6 +28,7 @@
     "@types/react": "18.3.31",
     "@types/react-dom": "18.3.7",
     "@vitejs/plugin-react": "5.2.0",
+    "gh-pages": "^6.3.0",
     "typescript": "5.8.3",
     "vite": "7.3.6"
   },
