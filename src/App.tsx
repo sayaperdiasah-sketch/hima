@@ -251,25 +251,11 @@ function InstitutionIdentity({ variant = "hero" }: { variant?: "hero" | "top" })
       className={`institution-identity institution-identity-${variant}`}
       aria-label="Instansi dan pelaksana INEFEST 4.0"
     >
-      <div className="identity-group identity-group-instansi">
-        <span className="identity-label">Instansi</span>
-        <div className="identity-logos">
-          <img src={`${import.meta.env.BASE_URL}logo-unirow.jpg`} alt="Universitas PGRI Ronggolawe Tuban" />
-          <div className="identity-divider" aria-hidden="true" />
-          <img src={`${import.meta.env.BASE_URL}logo-prodi-ti.jpg`} alt="Program Studi Teknik Informatika UNIROW" />
-        </div>
-        <div className="identity-text">
-          <b>Universitas PGRI Ronggolawe Tuban</b>
-          <small>Program Studi Teknik Informatika UNIROW</small>
-        </div>
-      </div>
-      <div className="identity-group identity-group-pelaksana">
-        <span className="identity-label">Pelaksana</span>
-        <img className="himatif-logo" src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" />
-        <div className="identity-text">
-          <b>HIMATIF UNIROW</b>
-        </div>
-      </div>
+      <img src={`${import.meta.env.BASE_URL}logo-unirow.jpg`} alt="Universitas PGRI Ronggolawe Tuban" />
+      <div className="identity-divider" aria-hidden="true" />
+      <img src={`${import.meta.env.BASE_URL}logo-prodi-ti.jpg`} alt="Program Studi Teknik Informatika UNIROW" />
+      <div className="identity-divider" aria-hidden="true" />
+      <img className="himatif-logo" src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" />
     </div>
   );
 }
