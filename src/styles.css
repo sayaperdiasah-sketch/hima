@@ -1330,3 +1330,219 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
   .social-list svg { width: 18px; height: 18px; flex-basis: 18px; }
 }
 
+
+/* ============================================================
+   HERO SECTION — responsif
+   ============================================================ */
+
+/* --- Navbar: sembunyikan menu teks di HP --- */
+@media (max-width: 780px) {
+  .main-nav {
+    display: none;
+  }
+  .main-nav.open {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    padding: 90px 28px 28px;
+    gap: 22px;
+    background: rgba(7, 19, 47, 0.98);
+    backdrop-filter: blur(14px);
+    font-size: 18px;
+  }
+  .main-nav.open a {
+    padding: 12px 0;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Logo INEFEST tetap di kiri, menu button di kanan */
+  .nav-wrap {
+    height: 60px;
+    position: relative;
+  }
+  .brand {
+    position: relative;
+    z-index: 61;
+  }
+  .menu-button {
+    display: block;
+    position: relative;
+    z-index: 61;
+  }
+}
+
+/* ============================================================
+   HERO CONTENT — stack di HP
+   ============================================================ */
+
+@media (max-width: 780px) {
+  .hero {
+    min-height: auto;
+  }
+  .hero-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 32px;
+    padding: 44px 0 32px;
+    width: calc(100% - 32px);
+    min-height: auto;
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    text-align: center;
+  }
+
+  .hero-copy .kicker {
+    justify-content: center;
+    font-size: 11px;
+    margin-bottom: 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 12vw, 60px);
+    letter-spacing: -.055em;
+    line-height: 1;
+    margin-bottom: 18px;
+    text-align: center;
+  }
+
+  .hero-subtitle {
+    text-align: center;
+    margin: -8px 0 14px;
+    font-size: 10.5px;
+    letter-spacing: .2em;
+  }
+
+  .hero-lead {
+    max-width: 480px;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 auto 26px;
+    text-align: center;
+  }
+
+  /* --- Tombol stack vertikal --- */
+  .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .hero-actions .button,
+  .hero-actions .inline-link {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+  .hero-actions .button { min-height: 50px; }
+
+  /* --- Hero stage (banner) di bawah --- */
+  .hero-stage {
+    width: 100%;
+    margin-top: 8px;
+    min-height: auto;
+  }
+  .hero-showcase { width: 100%; }
+  .hero-media-slot {
+    min-height: 320px;
+    border-radius: 20px;
+  }
+  .hero-media-copy { padding: 22px 20px; text-align: left; }
+  .hero-media-copy > small { font-size: 10px; }
+  .hero-media-copy h2 {
+    font-size: clamp(22px, 6.5vw, 34px);
+    line-height: 1.05;
+    margin: 8px 0 6px;
+    max-width: 14ch;
+  }
+  .hero-media-copy p { font-size: 12.5px; line-height: 1.5; max-width: 100%; }
+  .hero-media-copy a { font-size: 13px; margin-top: 14px; }
+  .hero-dots { justify-content: center; margin-top: 14px; }
+
+  /* --- Ticker --- */
+  .hero-ticker {
+    position: relative;
+    height: 42px;
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    padding: 0 14px;
+    justify-content: flex-start;
+    gap: 20px;
+    overflow: hidden;
+  }
+
+  /* --- Ornamen (orbit) disembunyikan supaya tidak nutupin --- */
+  .hero-orbit { display: none; }
+}
+
+/* ============================================================
+   HP kecil (≤ 540px)
+   ============================================================ */
+@media (max-width: 540px) {
+  .hero-content { padding: 32px 0 26px; gap: 26px; }
+
+  .hero h1 { font-size: clamp(34px, 13vw, 46px); }
+  .hero-lead { font-size: 13.5px; margin-bottom: 22px; }
+
+  .hero-actions { max-width: 100%; gap: 10px !important; }
+  .hero-actions .button { min-height: 46px; font-size: 14px; }
+
+  .hero-media-slot {
+    min-height: 280px;
+    border-radius: 16px;
+  }
+  .hero-media-copy { padding: 18px 16px; }
+  .hero-media-copy h2 { font-size: 20px; }
+  .hero-media-copy p { font-size: 12px; }
+  .hero-media-copy > small { display: none; }
+
+  .hero-ticker { height: 38px; font-size: 10px; gap: 16px; }
+}
+
+/* ============================================================
+   HP sangat kecil (≤ 380px)
+   ============================================================ */
+@media (max-width: 380px) {
+  .hero h1 { font-size: 30px; }
+  .hero-lead { font-size: 12.5px; }
+  .hero-media-slot { min-height: 240px; }
+  .hero-media-copy h2 { font-size: 18px; }
+  .hero-media-copy p { font-size: 11.5px; }
+  .hero-actions .button { min-height: 42px; font-size: 13px; }
+}
+
+/* ============================================================
+   Landscape HP
+   ============================================================ */
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero { min-height: auto; }
+  .hero-content { padding: 20px 0 14px; gap: 16px; }
+  .hero h1 { font-size: 30px; margin-bottom: 10px; }
+  .hero-subtitle { font-size: 9px; }
+  .hero-lead { font-size: 12.5px; margin-bottom: 16px; }
+  .hero-actions { max-width: 320px; }
+  .hero-actions .button { min-height: 40px; font-size: 13px; }
+  .hero-media-slot { min-height: 200px; }
+  .hero-media-copy h2 { font-size: 17px; }
+  .hero-media-copy p { display: none; }
+  .hero-ticker { height: 32px; font-size: 9px; }
+}
+
