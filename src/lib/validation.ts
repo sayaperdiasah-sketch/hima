@@ -97,17 +97,41 @@ export function validateCompetition(form: FormData) {
   const quota = Number(form.get("quota"));
   const deadline = new Date(String(form.get("deadline") ?? ""));
   const status = clean(form.get("status")) || "aktif";
-  const participationType = clean(form.get("participationType")) || "kelompok";
-  const whatsappGroupUrl = validateWhatsappGroupUrl(form.get("whatsappGroupUrl"));
-  if (!["individu", "kelompok"].includes(participationType)) throw new ValidationError("Jenis lomba tidak valid.");
-  const minMembers = participationType === "individu" ? 1 : Number(form.get("minMembers"));
-  const maxMembers = participationType === "individu" ? 1 : Number(form.get("maxMembers"));
+  const jenisPeserta = clean(form.get("jenisPeserta")) || "individu";
+  const minAnggota = Number(form.get("minAnggota") ?? 1);
+  const maxAnggota = Number(form.get("maxAnggota") ?? 1);
+  const whatsappRaw = clean(form.get("whatsappGroupUrl"));
+
   if (!Number.isInteger(fee) || fee < 0 || fee > 100_000_000) throw new ValidationError("Biaya pendaftaran tidak valid.");
   if (!Number.isInteger(quota) || quota < 1 || quota > 100_000) throw new ValidationError("Kuota harus 1–100.000 tim.");
-  if (participationType === "kelompok" && (!Number.isInteger(minMembers) || !Number.isInteger(maxMembers) || minMembers < 2 || maxMembers < minMembers || maxMembers > 20)) throw new ValidationError("Jumlah anggota kelompok harus 2–20 orang dan batas minimum tidak boleh melebihi maksimum.");
   if (Number.isNaN(deadline.getTime()) || deadline.getTime() <= Date.now()) throw new ValidationError("Batas pendaftaran harus di masa depan.");
   if (!["draft", "aktif", "ditutup"].includes(status)) throw new ValidationError("Status kompetisi tidak valid.");
-  if (status === "aktif" && !whatsappGroupUrl) throw new ValidationError("Tautan grup WhatsApp wajib diisi sebelum kompetisi diaktifkan.");
+  if (!["individu", "kelompok"].includes(jenisPeserta)) throw new ValidationError("Jenis peserta tidak valid.");
+
+  if (jenisPeserta === "kelompok") {
+    if (!Number.isInteger(minAnggota) || minAnggota < 2 || minAnggota > 20) {
+      throw new ValidationError("Jumlah anggota minimum harus 2–20 orang.");
+    }
+    if (!Number.isInteger(maxAnggota) || maxAnggota < 2 || maxAnggota > 20) {
+      throw new ValidationError("Jumlah anggota maksimum harus 2–20 orang.");
+    }
+    if (minAnggota > maxAnggota) {
+      throw new ValidationError("Jumlah anggota minimum tidak boleh melebihi maksimum.");
+    }
+  }
+
+  // Validasi URL grup WhatsApp (opsional, tapi kalau diisi harus valid)
+  let whatsappGroupUrl: string | null = null;
+  if (whatsappRaw) {
+    if (!/^https?:\/\//.test(whatsappRaw)) {
+      throw new ValidationError("URL grup WhatsApp harus dimulai dengan http:// atau https://");
+    }
+    if (whatsappRaw.length > 500) {
+      throw new ValidationError("URL grup WhatsApp terlalu panjang (maks 500 karakter).");
+    }
+    whatsappGroupUrl = whatsappRaw;
+  }
+
   return {
     name: requireLength("Nama kompetisi", clean(form.get("name")), 3, 140),
     category: requireLength("Kategori", clean(form.get("category")), 2, 80),
@@ -116,12 +140,12 @@ export function validateCompetition(form: FormData) {
     description: requireLength("Deskripsi", clean(form.get("description")), 20, 2_000),
     fee,
     quota,
-    participationType: participationType as "individu" | "kelompok",
-    minMembers,
-    maxMembers,
-    whatsappGroupUrl,
     deadlineIso: deadline.toISOString(),
     status: status as "draft" | "aktif" | "ditutup",
+    jenisPeserta: jenisPeserta as "individu" | "kelompok",
+    minAnggota: jenisPeserta === "kelompok" ? minAnggota : 1,
+    maxAnggota: jenisPeserta === "kelompok" ? maxAnggota : 1,
+    whatsappGroupUrl,
   };
 }
 
