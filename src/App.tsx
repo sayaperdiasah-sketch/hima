@@ -505,9 +505,7 @@ function Footer() {
         <span className="footer-instansi-label">Diselenggarakan oleh</span>
         <div className="footer-instansi-logos">
           <img src={`${import.meta.env.BASE_URL}logo-unirow.jpg`} alt="Universitas PGRI Ronggolawe Tuban" />
-          <span className="footer-instansi-divider" aria-hidden="true" />
           <img src={`${import.meta.env.BASE_URL}logo-prodi-ti.jpg`} alt="Program Studi Teknik Informatika UNIROW" />
-          <span className="footer-instansi-divider" aria-hidden="true" />
           <img className="himatif-logo" src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" />
         </div>
       </div>

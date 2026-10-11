@@ -1012,7 +1012,7 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
 
 
 /* ============================================================
-   FOOTER — baris instansi di tengah bawah
+   FOOTER — baris instansi di tengah bawah (satu blok, tanpa garis)
    ============================================================ */
 
 .footer-instansi-row {
@@ -1020,10 +1020,12 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 14px;
-  padding: 28px 0 22px;
+  padding: 30px 0 24px;
   margin-top: 8px;
   border-top: 1px solid rgb(255 255 255 / 7%);
+  text-align: center;
 }
 
 .footer-instansi-label {
@@ -1036,33 +1038,31 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
 }
 
 .footer-instansi-logos {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  gap: 14px;
   flex-wrap: wrap;
+  padding: 12px 20px;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 3%);
+  border: 1px solid rgb(255 255 255 / 8%);
 }
 
 .footer-instansi-logos img {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   padding: 3px;
   border-radius: 10px;
   object-fit: contain;
   background: #fff;
   box-shadow: 0 4px 12px rgb(0 0 0 / 20%);
   transition: transform .2s, box-shadow .2s;
+  flex: 0 0 auto;
 }
 .footer-instansi-logos img:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgb(0 0 0 / 28%);
-}
-
-.footer-instansi-divider {
-  width: 1px;
-  height: 32px;
-  background: rgb(255 255 255 / 12%);
-  flex: 0 0 auto;
 }
 
 /* --- HP besar (≤ 780px) --- */
@@ -1072,15 +1072,16 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
     gap: 12px;
   }
   .footer-instansi-logos {
-    gap: 16px;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 12px;
   }
   .footer-instansi-logos img {
-    width: 38px;
-    height: 38px;
+    width: 36px;
+    height: 36px;
     padding: 2px;
     border-radius: 8px;
   }
-  .footer-instansi-divider { height: 26px; }
   .footer-instansi-label { font-size: 9px; letter-spacing: .14em; }
 }
 
@@ -1091,28 +1092,31 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
     gap: 10px;
   }
   .footer-instansi-logos {
-    gap: 12px;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 10px;
   }
   .footer-instansi-logos img {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     padding: 2px;
     border-radius: 7px;
   }
-  .footer-instansi-divider { height: 22px; }
   .footer-instansi-label { font-size: 8px; letter-spacing: .12em; }
 }
 
 /* --- HP kecil (≤ 380px) --- */
 @media (max-width: 380px) {
-  .footer-instansi-logos { gap: 10px; }
+  .footer-instansi-logos {
+    gap: 6px;
+    padding: 6px 10px;
+  }
   .footer-instansi-logos img {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     padding: 1px;
     border-radius: 6px;
   }
-  .footer-instansi-divider { height: 20px; }
   .footer-instansi-label { font-size: 7.5px; }
 }
 
