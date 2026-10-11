@@ -274,10 +274,10 @@ function ParticipantHeader() {
           <a href="#mitra" onClick={() => setOpen(false)}>Mitra</a>
           <a href="#tentang" onClick={() => setOpen(false)}>Tentang</a>
         </nav>
-        <div className="nav-actions">
-          <Link className="text-link" to="/masuk">Masuk</Link>
-          <Link className="button button-small button-dark" to="/daftar">Buat Akun <ArrowRight size={15} /></Link>
-        </div>
+        <Link className="nav-inefest-logo" to="/" aria-label="INEFEST 4.0">
+          <img src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="Logo INEFEST 4.0" />
+          <span>INEFEST <b>4.0</b></span>
+        </Link>
         <button className="menu-button" onClick={() => setOpen(!open)} aria-label="Buka menu">
           {open ? <X /> : <Menu />}
         </button>
