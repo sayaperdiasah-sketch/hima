@@ -1086,3 +1086,121 @@ em { color: var(--blue); font-family: Georgia, serif; font-weight: 400; }
   .nav-wrap { height: 52px; }
 }
 
+
+/* ============================================================
+   INSTITUTION IDENTITY — responsif di semua device
+   ============================================================ */
+
+/* Tablet (≤ 1024px) */
+@media (max-width: 1024px) {
+  .institution-identity {
+    padding: 14px 20px;
+    gap: 24px;
+    margin-top: 34px;
+  }
+  .institution-identity img,
+  .institution-identity .himatif-logo {
+    width: 62px;
+    height: 62px;
+    padding: 4px;
+    border-radius: 12px;
+  }
+  .identity-group { gap: 12px; }
+  .identity-group-instansi { padding-right: 18px; }
+  .identity-label { font-size: 8.5px; letter-spacing: .14em; }
+}
+
+/* HP besar (≤ 780px) */
+@media (max-width: 780px) {
+  .institution-identity {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 16px !important;
+    margin-top: 28px !important;
+    padding: 14px 16px !important;
+    border-radius: 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .identity-group {
+    gap: 10px !important;
+  }
+  .identity-group-instansi {
+    padding-right: 14px !important;
+    border-right: 1px solid rgb(255 255 255 / 12%) !important;
+  }
+  .identity-group-pelaksana {
+    padding-left: 0 !important;
+  }
+  .institution-identity img,
+  .institution-identity .himatif-logo {
+    width: 52px !important;
+    height: 52px !important;
+    padding: 3px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 6px 16px rgb(0 0 0 / 18%) !important;
+  }
+  .identity-label {
+    font-size: 8px !important;
+    letter-spacing: .12em !important;
+    writing-mode: horizontal-tb !important;
+    transform: none !important;
+    margin-right: 4px !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+/* HP (≤ 540px) */
+@media (max-width: 540px) {
+  .institution-identity {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    padding: 12px 14px !important;
+    margin-top: 22px !important;
+    border-radius: 12px !important;
+  }
+  .identity-group {
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+  .identity-group-instansi {
+    padding-right: 0 !important;
+    padding-bottom: 12px !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgb(255 255 255 / 10%) !important;
+  }
+  .institution-identity img,
+  .institution-identity .himatif-logo {
+    width: 46px !important;
+    height: 46px !important;
+    padding: 2px !important;
+    border-radius: 9px !important;
+  }
+  .identity-label {
+    font-size: 7.5px !important;
+    letter-spacing: .1em !important;
+  }
+}
+
+/* HP sangat kecil (≤ 380px) */
+@media (max-width: 380px) {
+  .institution-identity {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+    margin-top: 18px !important;
+  }
+  .institution-identity img,
+  .institution-identity .himatif-logo {
+    width: 40px !important;
+    height: 40px !important;
+    padding: 2px !important;
+    border-radius: 8px !important;
+  }
+  .identity-label { font-size: 7px !important; }
+  .identity-group { gap: 8px !important; }
+}
+
