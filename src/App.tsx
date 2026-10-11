@@ -245,21 +245,6 @@ function Brand({ admin = false }: { admin?: boolean }) {
   );
 }
 
-function InstitutionIdentity({ variant = "hero" }: { variant?: "hero" | "top" }) {
-  return (
-    <div
-      className={`institution-identity institution-identity-${variant}`}
-      aria-label="Instansi dan pelaksana INEFEST 4.0"
-    >
-      <img src={`${import.meta.env.BASE_URL}logo-unirow.jpg`} alt="Universitas PGRI Ronggolawe Tuban" />
-      <div className="identity-divider" aria-hidden="true" />
-      <img src={`${import.meta.env.BASE_URL}logo-prodi-ti.jpg`} alt="Program Studi Teknik Informatika UNIROW" />
-      <div className="identity-divider" aria-hidden="true" />
-      <img className="himatif-logo" src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" />
-    </div>
-  );
-}
-
 function NavInefestLogo() {
   const [imgFailed, setImgFailed] = useState(false);
   return (
@@ -377,8 +362,7 @@ function HomePage() {
                 <Link className="button button-lime" to="/kompetisi">Jelajahi kompetisi <ArrowRight size={18} /></Link>
                 <a className="inline-link" href="#cara-kerja"><span className="play-dot">▶</span> Lihat cara kerja</a>
               </div>
-              <InstitutionIdentity />
-            </div>
+</div>
             <div className="hero-stage reveal delay-1"><HeroShowcase /></div>
           </div>
           <div className="hero-ticker"><span>INFORMATIKA</span><i>✦</i><span>INOVASI</span><i>✦</i><span>KOMPETISI</span><i>✦</i><span>KOLABORASI</span><i>✦</i><span>KREATIVITAS</span></div>
@@ -497,6 +481,23 @@ function Footer() {
             <dt>Email</dt>
             <dd><a href="mailto:himatif@unirow.ac.id">himatif@unirow.ac.id</a></dd>
           </div>
+          <div className="footer-instansi">
+            <div className="footer-instansi-logo">
+              <img src={`${import.meta.env.BASE_URL}logo-unirow.jpg`} alt="Universitas PGRI Ronggolawe Tuban" />
+              <div>
+                <b>Universitas PGRI Ronggolawe Tuban</b>
+                <small>Program Studi Teknik Informatika UNIROW</small>
+              </div>
+            </div>
+            <div className="footer-instansi-logo">
+              <img src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" />
+              <div>
+                <b>HIMATIF UNIROW</b>
+                <small>Pelaksana INEFEST 4.0</small>
+              </div>
+            </div>
+          </div>
+
         </dl>
       </div>
 
