@@ -481,14 +481,6 @@ function Footer() {
             <dt>Email</dt>
             <dd><a href="mailto:himatif@unirow.ac.id">himatif@unirow.ac.id</a></dd>
           </div>
-          <div className="footer-instansi">
-            <div className="footer-instansi-logo">
-              <img src={`${import.meta.env.BASE_URL}logo-unirow.jpg`} alt="Universitas PGRI Ronggolawe Tuban" />
-              <div>
-                <b>Universitas PGRI Ronggolawe Tuban</b>
-                <small>Program Studi Teknik Informatika UNIROW</small>
-              </div>
-            </div>
             <div className="footer-instansi-logo">
               <img src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" />
               <div>
@@ -516,6 +508,17 @@ function Footer() {
             </li>
           ))}
         </ul>
+      </div>
+
+      <div className="footer-instansi-row" aria-label="Diselenggarakan oleh">
+        <span className="footer-instansi-label">Diselenggarakan oleh</span>
+        <div className="footer-instansi-logos">
+          <img src={`${import.meta.env.BASE_URL}logo-unirow.jpg`} alt="Universitas PGRI Ronggolawe Tuban" title="Universitas PGRI Ronggolawe Tuban" />
+          <span className="footer-instansi-divider" aria-hidden="true" />
+          <img src={`${import.meta.env.BASE_URL}logo-prodi-ti.jpg`} alt="Program Studi Teknik Informatika UNIROW" title="Program Studi Teknik Informatika UNIROW" />
+          <span className="footer-instansi-divider" aria-hidden="true" />
+          <img src={`${import.meta.env.BASE_URL}logo-himatif.jpg`} alt="HIMATIF UNIROW" title="HIMATIF UNIROW" />
+        </div>
       </div>
 
       <div className="footer-bottom">
